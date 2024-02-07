@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/boleta")
 public class BoletaController {
@@ -22,7 +24,7 @@ public class BoletaController {
 
     @GetMapping("/rut/{rut}")
     @ResponseBody
-    BoletaResponse getDataFolioCrematorio(@PathVariable("rut") Integer rut){
+    List<BoletaResponse> getDataFolioCrematorio(@PathVariable("rut") Integer rut){
         return boletaService.getBoletaByRut(rut);
     }
 

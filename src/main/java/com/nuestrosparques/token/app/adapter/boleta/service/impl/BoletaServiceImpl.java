@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class BoletaServiceImpl implements BoletaService {
 
@@ -39,14 +42,14 @@ public class BoletaServiceImpl implements BoletaService {
     }
 
     @Override
-    public BoletaResponse getBoletaByRut(Integer rut) {
+    public List<BoletaResponse> getBoletaByRut(Integer rut) {
         String apiUrl = boletaApiUrl + "/rut/" + rut;
-        ResponseEntity<BoletaResponse> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<BoletaResponse>() {});
+        ResponseEntity<List<BoletaResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<BoletaResponse>>() {});
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }else {
             // Handle failure here
-            return new BoletaResponse(); // or throw an exception
+            return new ArrayList<>(); // or throw an exception
         }
     }
 }
