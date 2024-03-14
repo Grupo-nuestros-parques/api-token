@@ -13,6 +13,9 @@ public class ContratoDTO implements Serializable {
     private Float fallecidos;
     private Float moracred;
     private Float moraMant;
+    private String serie;
+    private String base;
+    private String numero;
 
     public Integer getRut() {
         return rut;
@@ -92,5 +95,29 @@ public class ContratoDTO implements Serializable {
 
     public void setMoraMant(Float moraMant) {
         this.moraMant = moraMant;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 }

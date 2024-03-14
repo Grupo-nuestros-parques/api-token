@@ -15,6 +15,7 @@ public class AgenteResponse implements Serializable {
     private String clave;
     private String sindicato;
     private String cargo;
+    private String foto;
 
     public String getCodigoAgente() {
         return codigoAgente;
@@ -102,5 +103,13 @@ public class AgenteResponse implements Serializable {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 }
