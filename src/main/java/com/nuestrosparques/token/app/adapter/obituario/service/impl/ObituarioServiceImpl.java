@@ -1,7 +1,10 @@
 package com.nuestrosparques.token.app.adapter.obituario.service.impl;
 
+import com.nuestrosparques.token.app.adapter.obituario.dto.ObituarioCrematorioDTO;
 import com.nuestrosparques.token.app.adapter.obituario.dto.ObituarioDTO;
+import com.nuestrosparques.token.app.adapter.obituario.mapper.ObituarioCrematorioMapper;
 import com.nuestrosparques.token.app.adapter.obituario.mapper.ObituarioMapper;
+import com.nuestrosparques.token.app.adapter.obituario.response.ObituarioCrematorioResponse;
 import com.nuestrosparques.token.app.adapter.obituario.response.ObituarioResponse;
 import com.nuestrosparques.token.app.adapter.obituario.service.ObituarioService;
 import com.nuestrosparques.token.app.adapter.qr.response.CrematorioScanResponse;
@@ -23,12 +26,18 @@ public class ObituarioServiceImpl implements ObituarioService {
     @Value("${api.obituario.service}")
     private String obituarioApiUrl; // This would be your API endpoint
 
+    @Value("${api.obituariocrematorio.service}")
+    private String obituarioCrematorioApiUrl;
+
     private final RestTemplate restTemplate;
     private final ObituarioMapper obituarioMapper;
 
-    public ObituarioServiceImpl(RestTemplate restTemplate, ObituarioMapper obituarioMapper) {
+    private final ObituarioCrematorioMapper obituarioCrematorioMapper;
+
+    public ObituarioServiceImpl(RestTemplate restTemplate, ObituarioMapper obituarioMapper, ObituarioCrematorioMapper obituarioCrematorioMapper) {
         this.restTemplate = restTemplate;
         this.obituarioMapper = obituarioMapper;
+        this.obituarioCrematorioMapper = obituarioCrematorioMapper;
     }
 
     @Override
@@ -46,5 +55,21 @@ public class ObituarioServiceImpl implements ObituarioService {
             return Collections.emptyList(); // or throw an exception
         }
         return fallecidosDTOS;
+    }
+
+    @Override
+    public List<ObituarioCrematorioDTO> encontrarTodosObiturariosCinerario(String fechaInicio, String fechaFin) {
+        List<ObituarioCrematorioResponse> responses = new ArrayList<>();
+        List<ObituarioCrematorioDTO> crematorioDTOS = new ArrayList<>();
+        String apiUrl = obituarioCrematorioApiUrl + "?fechaInicio=" + fechaInicio + "&fechaFin=" + fechaFin;
+
+        ResponseEntity<List<ObituarioCrematorioResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ObituarioCrematorioResponse>>() {});
+        if(response.getStatusCode().is2xxSuccessful()) {
+            responses = response.getBody();
+            crematorioDTOS = obituarioCrematorioMapper.transformObituarioCrematorioToDTO(responses);
+        }else{
+            return Collections.emptyList();
+        }
+        return crematorioDTOS;
     }
 }
