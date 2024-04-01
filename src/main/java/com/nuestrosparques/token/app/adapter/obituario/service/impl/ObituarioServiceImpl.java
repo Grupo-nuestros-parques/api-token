@@ -26,9 +26,6 @@ public class ObituarioServiceImpl implements ObituarioService {
     @Value("${api.obituario.service}")
     private String obituarioApiUrl; // This would be your API endpoint
 
-    @Value("${api.obituariocrematorio.service}")
-    private String obituarioCrematorioApiUrl;
-
     private final RestTemplate restTemplate;
     private final ObituarioMapper obituarioMapper;
 
@@ -61,7 +58,7 @@ public class ObituarioServiceImpl implements ObituarioService {
     public List<ObituarioCrematorioDTO> encontrarTodosObiturariosCinerario(String fechaInicio, String fechaFin) {
         List<ObituarioCrematorioResponse> responses = new ArrayList<>();
         List<ObituarioCrematorioDTO> crematorioDTOS = new ArrayList<>();
-        String apiUrl = obituarioCrematorioApiUrl + "?fechaInicio=" + fechaInicio + "&fechaFin=" + fechaFin;
+        String apiUrl = obituarioApiUrl + "/crematorio?fechaInicio=" + fechaInicio + "&fechaFin=" + fechaFin;
 
         ResponseEntity<List<ObituarioCrematorioResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ObituarioCrematorioResponse>>() {});
         if(response.getStatusCode().is2xxSuccessful()) {
