@@ -2,10 +2,12 @@ package com.nuestrosparques.token.app.adapter.obituario.mapper;
 
 import com.nuestrosparques.token.app.adapter.obituario.dto.ObituarioCrematorioDTO;
 import com.nuestrosparques.token.app.adapter.obituario.response.ObituarioCrematorioResponse;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ObituarioCrematorioMapper {
 
     public List<ObituarioCrematorioDTO> transformObituarioCrematorioToDTO(List<ObituarioCrematorioResponse> obituarioCrematorioResponses){
