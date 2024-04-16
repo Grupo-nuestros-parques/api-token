@@ -13,7 +13,10 @@ public class BoletaResponse implements Serializable {
     private String rutEmpresa;
     private String vieneDe;
     private String contrato;
+    private String caja;
     private String tipoContrato;
+
+
 
     public String getFolio() {
         return folio;
@@ -93,5 +96,13 @@ public class BoletaResponse implements Serializable {
 
     public void setTipoContrato(String tipoContrato) {
         this.tipoContrato = tipoContrato;
+    }
+
+    public String getCaja() {
+        return caja;
+    }
+
+    public void setCaja(String caja) {
+        this.caja = caja;
     }
 }
