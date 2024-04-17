@@ -3,6 +3,7 @@ package com.nuestrosparques.token.app.controller;
 import com.nuestrosparques.token.app.adapter.pagos.dto.PagosDTO;
 import com.nuestrosparques.token.app.adapter.pagos.service.PagoService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +23,12 @@ public class PagoController {
 
     @GetMapping()
     @ResponseBody
-    public List<PagosDTO> getUltimosPagosPorContrato(@RequestParam(value="numero") String numero, @RequestParam(value="base") String base, @RequestParam(value="serie") String serie) {
-        return pagoService.getUltimosPagosPorContrato(base,serie,numero);
+    public List<PagosDTO> getUltimosPagosPorContrato(
+            @RequestParam(value="numero") String numero,
+            @RequestParam(value="base") String base,
+            @RequestParam(value="serie") String serie,
+            @RequestHeader("x-schema") String schema) {
+        System.out.println("schema = " + schema.replaceAll("\"", ""));
+        return pagoService.getUltimosPagosPorContrato(base,serie,numero,schema.replaceAll("\"", ""));
     }
 }

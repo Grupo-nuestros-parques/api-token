@@ -18,8 +18,10 @@ public class ContratoController {
 
     @GetMapping
     @ResponseBody
-    public List<ContratoDTO> getContratosPorRut(@RequestParam("rut" )Integer rut){
-        System.out.println("rut = " + rut);
-        return contratoService.getContratosPorRut(rut);
+    public List<ContratoDTO> getContratosPorRut(
+            @RequestParam("rut" )Integer rut,
+            @RequestHeader("x-schema") String schema){
+        System.out.println("rut = " + rut + "schema = " + schema);
+        return contratoService.getContratosPorRut(rut,schema.replaceAll("\"", ""));
     }
 }

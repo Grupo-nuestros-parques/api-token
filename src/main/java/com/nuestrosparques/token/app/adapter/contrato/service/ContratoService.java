@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ContratoService {
 
-    List<ContratoDTO> getContratosPorRut(Integer rut);
+    List<ContratoDTO> getContratosPorRut(Integer rut, String schema);
 }

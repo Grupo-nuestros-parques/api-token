@@ -7,6 +7,7 @@ public class LoginPortalPlusDTO implements Serializable {
     private boolean trabajadorExiste;
     private AgenteResponse agentes;
     private boolean primerLogin;
+    private String schema;
 
     public boolean isTrabajadorExiste() {
         return trabajadorExiste;
@@ -30,5 +31,13 @@ public class LoginPortalPlusDTO implements Serializable {
 
     public void setPrimerLogin(boolean primerLogin) {
         this.primerLogin = primerLogin;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
+
+    public void setSchema(String schema) {
+        this.schema = schema;
     }
 }

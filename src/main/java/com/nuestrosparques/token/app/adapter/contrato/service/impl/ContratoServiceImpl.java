@@ -5,6 +5,8 @@ import com.nuestrosparques.token.app.adapter.contrato.service.ContratoService;
 import com.nuestrosparques.token.app.adapter.encargados.response.LoginResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -26,10 +28,13 @@ public class ContratoServiceImpl implements ContratoService {
     }
 
     @Override
-    public List<ContratoDTO> getContratosPorRut(Integer rut) {
+    public List<ContratoDTO> getContratosPorRut(Integer rut, String schema) {
         List<ContratoDTO> contratos = new ArrayList<>();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-schema", schema);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         String apiUrl = contratosApiUrl + "?rut="+ rut; // Modify this to match your API's endpoint structure
-        ResponseEntity<List<ContratoDTO>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<ContratoDTO>>() {});
+        ResponseEntity<List<ContratoDTO>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<ContratoDTO>>() {});
         if (response.getStatusCode().is2xxSuccessful()) {
             contratos = response.getBody();
         }
