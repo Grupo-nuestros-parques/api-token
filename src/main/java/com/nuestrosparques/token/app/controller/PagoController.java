@@ -1,5 +1,6 @@
 package com.nuestrosparques.token.app.controller;
 
+import com.nuestrosparques.token.app.adapter.pagos.dto.CuponesDTO;
 import com.nuestrosparques.token.app.adapter.pagos.dto.PagosDTO;
 import com.nuestrosparques.token.app.adapter.pagos.service.PagoService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +22,18 @@ public class PagoController {
         this.pagoService = pagoService;
     }
 
-    @GetMapping()
+    @GetMapping
     @ResponseBody
     public List<PagosDTO> getUltimosPagosPorContrato(
             @RequestParam(value="numero") String numero,
             @RequestParam(value="base") String base,
             @RequestParam(value="serie") String serie) {
         return pagoService.getUltimosPagosPorContrato(base,serie,numero);
+    }
+
+    @GetMapping("/cupones")
+    @ResponseBody
+    public List<CuponesDTO> getCuponesPorRut(@RequestParam("rut") String rut){
+        return pagoService.getCuponesPorRut(rut);
     }
 }
