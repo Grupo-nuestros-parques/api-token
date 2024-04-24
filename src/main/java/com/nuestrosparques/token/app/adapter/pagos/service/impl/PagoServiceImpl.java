@@ -38,12 +38,14 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public List<PagosDTO> getUltimosPagosPorContrato(String base, String serie, String numero) {
+    public List<PagosDTO> getUltimosPagosPorContrato(String base, String serie, String numero, String schema) {
         List<PagosResponse> pagosResponses = new ArrayList<>();
         List<PagosDTO> pagosDTO = new ArrayList<>();
-
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-schema", schema);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
         String apiUrl = pagosApiUrl + "?numero="+ numero + "&base=" + base + "&serie=" + serie; // Modify this to match your API's endpoint structure
-        ResponseEntity<List<PagosResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<PagosResponse>>() {});
+        ResponseEntity<List<PagosResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<PagosResponse>>() {});
         if (response.getStatusCode().is2xxSuccessful()) {
             pagosResponses = response.getBody();
             pagosDTO = pagosMapper.transformPagosToDTO(pagosResponses);

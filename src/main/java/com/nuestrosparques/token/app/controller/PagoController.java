@@ -27,8 +27,10 @@ public class PagoController {
     public List<PagosDTO> getUltimosPagosPorContrato(
             @RequestParam(value="numero") String numero,
             @RequestParam(value="base") String base,
-            @RequestParam(value="serie") String serie) {
-        return pagoService.getUltimosPagosPorContrato(base,serie,numero);
+            @RequestParam(value="serie") String serie,
+            @RequestHeader("x-schema") String schema) {
+        System.out.println("schema = " + schema.replaceAll("\"", ""));
+        return pagoService.getUltimosPagosPorContrato(base,serie,numero,schema.replaceAll("\"", ""));
     }
 
     @GetMapping("/cupones")
