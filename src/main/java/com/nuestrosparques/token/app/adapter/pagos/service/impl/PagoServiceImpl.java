@@ -56,11 +56,14 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public List<CuponesDTO> getCuponesPorRut(String rut) {
+    public List<CuponesDTO> getCuponesPorRut(String rut, String schema) {
         List<CuponesResponse>  cuponesResponses = new ArrayList<>();
         List<CuponesDTO> cuponesDTOS = new ArrayList<>();
         String apiUrl = pagosApiUrl + "/cupones?rut="+rut;
-        ResponseEntity<List<CuponesResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<CuponesResponse>>() {});
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-schema", schema);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<List<CuponesResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<CuponesResponse>>() {});
         if(response.getStatusCode().is2xxSuccessful()){
             cuponesResponses = response.getBody();
             cuponesDTOS = cuponesMapper.transformCuponesToDTO(cuponesResponses);

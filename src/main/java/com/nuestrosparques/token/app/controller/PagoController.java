@@ -35,7 +35,7 @@ public class PagoController {
 
     @GetMapping("/cupones")
     @ResponseBody
-    public List<CuponesDTO> getCuponesPorRut(@RequestParam("rut") String rut){
-        return pagoService.getCuponesPorRut(rut);
+    public List<CuponesDTO> getCuponesPorRut(@RequestParam("rut") String rut, @RequestHeader("x-schema") String schema){
+        return pagoService.getCuponesPorRut(rut, schema.replaceAll("\"", ""));
     }
 }
