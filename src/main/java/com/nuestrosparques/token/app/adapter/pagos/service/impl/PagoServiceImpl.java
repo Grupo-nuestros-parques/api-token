@@ -56,21 +56,35 @@ public class PagoServiceImpl implements PagoService {
     }
 
     @Override
-    public List<CuponesDTO> getCuponesPorRut(String rut, String schema) {
+    public List<CuponesDTO> getCuponesPorRut(String rut, Integer limitE, Integer limitF,  String schema) {
         List<CuponesResponse>  cuponesResponses = new ArrayList<>();
+        List<CuponesResponse> cuponesResponsesF = new ArrayList<>();
+
         List<CuponesDTO> cuponesDTOS = new ArrayList<>();
-        String apiUrl = pagosApiUrl + "/cupones?rut="+rut;
+        List<CuponesDTO> cuponesDTOSF = new ArrayList<>();
+        List<CuponesDTO> listaCupones = new ArrayList<>();
+        String apiUrlP = pagosApiUrl + "/cupones/pendientes?rut="+rut;
+        String apiUrlF = pagosApiUrl + "/cupones/futuros?rut="+rut+"&limitE="+limitE+"&limitF="+limitF;
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-schema", schema);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
-        ResponseEntity<List<CuponesResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<CuponesResponse>>() {});
+        ResponseEntity<List<CuponesResponse>> response = restTemplate.exchange(apiUrlP, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<CuponesResponse>>() {});
+        ResponseEntity<List<CuponesResponse>> responseF = restTemplate.exchange(apiUrlF, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<CuponesResponse>>() {});
         if(response.getStatusCode().is2xxSuccessful()){
             cuponesResponses = response.getBody();
+            cuponesResponsesF = responseF.getBody();
             cuponesDTOS = cuponesMapper.transformCuponesToDTO(cuponesResponses);
-
+            cuponesDTOSF= cuponesMapper.transformCuponesToDTO(cuponesResponsesF);
+            cuponesDTOSF.forEach(cupon ->{
+                listaCupones.add(cupon);
+            });
+            cuponesDTOS.forEach(cupon ->{
+                listaCupones.add(cupon);
+            });
+            System.out.println("listaCupones = " + listaCupones);
         } else {
-            Collections.emptyList();
+            return Collections.emptyList();
         }
-        return cuponesDTOS;
+        return listaCupones;
     }
 }

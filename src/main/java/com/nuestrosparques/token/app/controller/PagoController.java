@@ -3,12 +3,7 @@ package com.nuestrosparques.token.app.controller;
 import com.nuestrosparques.token.app.adapter.pagos.dto.CuponesDTO;
 import com.nuestrosparques.token.app.adapter.pagos.dto.PagosDTO;
 import com.nuestrosparques.token.app.adapter.pagos.service.PagoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,7 +30,7 @@ public class PagoController {
 
     @GetMapping("/cupones")
     @ResponseBody
-    public List<CuponesDTO> getCuponesPorRut(@RequestParam("rut") String rut, @RequestHeader("x-schema") String schema){
-        return pagoService.getCuponesPorRut(rut, schema.replaceAll("\"", ""));
+    public List<CuponesDTO> getCuponesPorRut(@RequestParam("rut") String rut, @RequestParam(defaultValue = "5") Integer limitE, @RequestParam(defaultValue = "2") Integer limitF, @RequestHeader("x-schema") String schema){
+        return pagoService.getCuponesPorRut(rut, limitE, limitF, schema.replaceAll("\"", ""));
     }
 }

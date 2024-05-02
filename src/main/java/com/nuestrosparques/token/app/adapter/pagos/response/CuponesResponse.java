@@ -9,7 +9,7 @@ public class CuponesResponse {
     private Integer nroCupon;
     private Integer rut;
     private Integer nroCuota;
-    private Date fechaVenc;
+    private String fechaVenc;
     private String estadoPagoCupon;
     private String tipoMov;
     private Integer montoCuotaPeso;
@@ -54,10 +54,10 @@ public class CuponesResponse {
     public void setNroCuota(Integer nroCuota) {
         this.nroCuota = nroCuota;
     }
-    public Date getFechaVenc() {
+    public String getFechaVenc() {
         return fechaVenc;
     }
-    public void setFechaVenc(Date fechaVenc) {
+    public void setFechaVenc(String fechaVenc) {
         this.fechaVenc = fechaVenc;
     }
     public String getEstadoPagoCupon() {

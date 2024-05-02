@@ -9,7 +9,7 @@ public class CuponesDTO {
     private Integer a4; //nroCupon;
     private Integer a5; //rut;
     private Integer a6; //nroCuota;
-    private Date a7; //fechaVenc;
+    private String a7; //fechaVenc;
     private String a8; //estadoPagoCupon;
     private String a9; //tipoMov;
     private Integer a10; //montoCuotaPeso;
@@ -65,11 +65,11 @@ public class CuponesDTO {
         this.a6 = a6;
     }
 
-    public Date getA7() {
+    public String getA7() {
         return a7;
     }
 
-    public void setA7(Date a7) {
+    public void setA7(String a7) {
         this.a7 = a7;
     }
 

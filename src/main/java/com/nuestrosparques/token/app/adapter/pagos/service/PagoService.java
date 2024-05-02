@@ -8,5 +8,5 @@ import java.util.List;
 public interface PagoService {
 
     List<PagosDTO> getUltimosPagosPorContrato(String base, String serie, String numero, String schema);
-    List<CuponesDTO> getCuponesPorRut(String rut, String schema);
+    List<CuponesDTO> getCuponesPorRut(String rut, Integer limitE, Integer limitF, String schema);
 }
