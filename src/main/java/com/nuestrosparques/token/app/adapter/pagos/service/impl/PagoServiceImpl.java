@@ -1,7 +1,10 @@
 package com.nuestrosparques.token.app.adapter.pagos.service.impl;
 
+import com.nuestrosparques.token.app.adapter.pagos.dto.CuponesDTO;
 import com.nuestrosparques.token.app.adapter.pagos.dto.PagosDTO;
+import com.nuestrosparques.token.app.adapter.pagos.mapper.CuponesMapper;
 import com.nuestrosparques.token.app.adapter.pagos.mapper.PagosMapper;
+import com.nuestrosparques.token.app.adapter.pagos.response.CuponesResponse;
 import com.nuestrosparques.token.app.adapter.pagos.response.PagosResponse;
 import com.nuestrosparques.token.app.adapter.pagos.service.PagoService;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +29,12 @@ public class PagoServiceImpl implements PagoService {
     private final RestTemplate restTemplate;
 
     private final PagosMapper pagosMapper;
+    private final CuponesMapper cuponesMapper;
 
-    public PagoServiceImpl(RestTemplate restTemplate, PagosMapper pagosMapper) {
+    public PagoServiceImpl(RestTemplate restTemplate, PagosMapper pagosMapper, CuponesMapper cuponesMapper) {
         this.restTemplate = restTemplate;
         this.pagosMapper = pagosMapper;
+        this.cuponesMapper = cuponesMapper;
     }
 
     @Override
@@ -48,5 +53,38 @@ public class PagoServiceImpl implements PagoService {
             return Collections.emptyList();
         }
         return pagosDTO;
+    }
+
+    @Override
+    public List<CuponesDTO> getCuponesPorRut(String rut, Integer limitE, Integer limitF,  String schema) {
+        List<CuponesResponse>  cuponesResponses = new ArrayList<>();
+        List<CuponesResponse> cuponesResponsesF = new ArrayList<>();
+
+        List<CuponesDTO> cuponesDTOS = new ArrayList<>();
+        List<CuponesDTO> cuponesDTOSF = new ArrayList<>();
+        List<CuponesDTO> listaCupones = new ArrayList<>();
+        String apiUrlP = pagosApiUrl + "/cupones/pendientes?rut="+rut;
+        String apiUrlF = pagosApiUrl + "/cupones/futuros?rut="+rut+"&limitE="+limitE+"&limitF="+limitF;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-schema", schema);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<List<CuponesResponse>> response = restTemplate.exchange(apiUrlP, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<CuponesResponse>>() {});
+        ResponseEntity<List<CuponesResponse>> responseF = restTemplate.exchange(apiUrlF, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<CuponesResponse>>() {});
+        if(response.getStatusCode().is2xxSuccessful()){
+            cuponesResponses = response.getBody();
+            cuponesResponsesF = responseF.getBody();
+            cuponesDTOS = cuponesMapper.transformCuponesToDTO(cuponesResponses);
+            cuponesDTOSF= cuponesMapper.transformCuponesToDTO(cuponesResponsesF);
+            cuponesDTOSF.forEach(cupon ->{
+                listaCupones.add(cupon);
+            });
+            cuponesDTOS.forEach(cupon ->{
+                listaCupones.add(cupon);
+            });
+            System.out.println("listaCupones = " + listaCupones);
+        } else {
+            return Collections.emptyList();
+        }
+        return listaCupones;
     }
 }
