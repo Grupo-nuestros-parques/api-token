@@ -12,11 +12,9 @@ public class CuponesResponse {
     private String fechaVenc;
     private String estadoPagoCupon;
     private String tipoMov;
-    private Integer montoCuotaPeso;
+    private Integer montoCuotaContrato;
     private String dv;
     private String tipoMoneda;
-    private String piePactado;
-
 
     public String getBase() {
         return base;
@@ -72,11 +70,11 @@ public class CuponesResponse {
     public void setTipoMov(String tipoMov) {
         this.tipoMov = tipoMov;
     }
-    public Integer getMontoCuotaPeso() {
-        return montoCuotaPeso;
+    public Integer getMontoCuotaContrato() {
+        return montoCuotaContrato;
     }
-    public void setMontoCuotaPeso(Integer montoCuotaPeso) {
-        this.montoCuotaPeso = montoCuotaPeso;
+    public void setMontoCuotaContrato(Integer montoCuotaContrato) {
+        this.montoCuotaContrato = montoCuotaContrato;
     }
     public String getDv() {
         return dv;
@@ -90,11 +88,6 @@ public class CuponesResponse {
     public void setTipoMoneda(String tipoMoneda) {
         this.tipoMoneda = tipoMoneda;
     }
-    public String getPiePactado() {
-        return piePactado;
-    }
-    public void setPiePactado(String piePactado) {
-        this.piePactado = piePactado;
-    }
+
 
 }

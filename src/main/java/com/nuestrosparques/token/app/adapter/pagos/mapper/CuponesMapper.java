@@ -23,10 +23,9 @@ public class CuponesMapper {
             cuponesDTO.setA7(resp.getFechaVenc());
             cuponesDTO.setA8(resp.getEstadoPagoCupon());
             cuponesDTO.setA9(resp.getTipoMov());
-            cuponesDTO.setA10(resp.getMontoCuotaPeso());
+            cuponesDTO.setA10(resp.getMontoCuotaContrato());
             cuponesDTO.setA11(resp.getDv());
             cuponesDTO.setA12(resp.getTipoMoneda());
-            cuponesDTO.setA13(resp.getPiePactado());
             cupones.add(cuponesDTO);
         });
 
