@@ -12,10 +12,9 @@ public class CuponesDTO {
     private String a7; //fechaVenc;
     private String a8; //estadoPagoCupon;
     private String a9; //tipoMov;
-    private Integer a10; //montoCuotaPeso;
+    private Integer a10; //montoCuotaContrato;
     private String a11; //dv;
     private String a12; //tipoMoneda;
-    private String a13; //piePactado;
 
     public String getA1() {
         return a1;
@@ -113,11 +112,4 @@ public class CuponesDTO {
         this.a12 = a12;
     }
 
-    public String getA13() {
-        return a13;
-    }
-
-    public void setA13(String a13) {
-        this.a13 = a13;
-    }
 }
