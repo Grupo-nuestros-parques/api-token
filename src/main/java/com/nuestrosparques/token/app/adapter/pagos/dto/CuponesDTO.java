@@ -12,7 +12,7 @@ public class CuponesDTO {
     private String a7; //fechaVenc;
     private String a8; //estadoPagoCupon;
     private String a9; //tipoMov;
-    private Integer a10; //montoCuotaContrato;
+    private Double a10; //montoCuotaContrato;
     private String a11; //dv;
     private String a12; //tipoMoneda;
 
@@ -88,11 +88,11 @@ public class CuponesDTO {
         this.a9 = a9;
     }
 
-    public Integer getA10() {
+    public Double getA10() {
         return a10;
     }
 
-    public void setA10(Integer a10) {
+    public void setA10(Double a10) {
         this.a10 = a10;
     }
 

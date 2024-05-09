@@ -12,7 +12,7 @@ public class CuponesResponse {
     private String fechaVenc;
     private String estadoPagoCupon;
     private String tipoMov;
-    private Integer montoCuotaContrato;
+    private Double montoCuotaContrato;
     private String dv;
     private String tipoMoneda;
 
@@ -70,10 +70,10 @@ public class CuponesResponse {
     public void setTipoMov(String tipoMov) {
         this.tipoMov = tipoMov;
     }
-    public Integer getMontoCuotaContrato() {
-        return montoCuotaContrato;
+    public Double getMontoCuotaContrato() {
+        return montoCuotaContrato ;
     }
-    public void setMontoCuotaContrato(Integer montoCuotaContrato) {
+    public void setMontoCuotaContrato(Double montoCuotaContrato) {
         this.montoCuotaContrato = montoCuotaContrato;
     }
     public String getDv() {
