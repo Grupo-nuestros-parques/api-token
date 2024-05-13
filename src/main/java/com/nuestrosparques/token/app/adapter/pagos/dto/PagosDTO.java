@@ -9,7 +9,7 @@ public class PagosDTO implements Serializable {
 
     private String a2; //tipoCob;
 
-    private Date a3; //fechaPago;
+    private String a3; //fechaPago;
 
     private String a4; //tipoMov;
 
@@ -105,11 +105,11 @@ public class PagosDTO implements Serializable {
         this.a2 = a2;
     }
 
-    public Date getA3() {
+    public String getA3() {
         return a3;
     }
 
-    public void setA3(Date a3) {
+    public void setA3(String a3) {
         this.a3 = a3;
     }
 

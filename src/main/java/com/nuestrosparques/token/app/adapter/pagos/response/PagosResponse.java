@@ -7,7 +7,7 @@ public class PagosResponse {
 
     private String tipoCob;
 
-    private Date fechaPago;
+    private String fechaPago;
 
     private String tipoMov;
 
@@ -99,11 +99,11 @@ public class PagosResponse {
         this.tipoCob = tipoCob;
     }
 
-    public Date getFechaPago() {
+    public String getFechaPago() {
         return fechaPago;
     }
 
-    public void setFechaPago(Date fechaPago) {
+    public void setFechaPago(String fechaPago) {
         this.fechaPago = fechaPago;
     }
 
