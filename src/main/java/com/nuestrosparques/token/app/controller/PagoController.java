@@ -28,9 +28,25 @@ public class PagoController {
         return pagoService.getUltimosPagosPorContrato(base,serie,numero,schema.replaceAll("\"", ""));
     }
 
-    @GetMapping("/cupones")
+    @GetMapping("/cupones-pendientes")
     @ResponseBody
-    public List<CuponesDTO> getCuponesPorRut(@RequestParam("rut") String rut, @RequestParam(defaultValue = "5") Integer limitE, @RequestParam(defaultValue = "2") Integer limitF, @RequestHeader("x-schema") String schema){
-        return pagoService.getCuponesPorRut(rut, limitE, limitF, schema.replaceAll("\"", ""));
+    public List<CuponesDTO> getCuponesPendientesPorRut(
+            @RequestParam("rut") String rut,
+            @RequestParam(defaultValue = "5") Integer limitE,
+            @RequestParam(defaultValue = "2") Integer limitF,
+            @RequestHeader("x-schema") String schema
+    ){
+        return pagoService.getCuponesPendientesPorRut(rut, limitE, limitF, schema.replaceAll("\"", ""));
+    }
+
+    @GetMapping("/cupones-futuros")
+    @ResponseBody
+    public List<CuponesDTO> getCuponesFuturosPorRut(
+            @RequestParam("rut") String rut,
+            @RequestParam(defaultValue = "5") Integer limitE,
+            @RequestParam(defaultValue = "2") Integer limitF,
+            @RequestHeader("x-schema") String schema
+    ){
+        return pagoService.getCuponesFuturosPorRut(rut, limitE, limitF, schema.replaceAll("\"", ""));
     }
 }
