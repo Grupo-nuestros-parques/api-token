@@ -28,12 +28,26 @@ public class ContratoServiceImpl implements ContratoService {
     }
 
     @Override
-    public List<ContratoDTO> getContratosPorRut(Integer rut, String schema) {
+    public List<ContratoDTO> getContratosPorRutForContract(Integer rut, String schema) {
         List<ContratoDTO> contratos = new ArrayList<>();
         HttpHeaders headers = new HttpHeaders();
         headers.add("x-schema", schema);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
-        String apiUrl = contratosApiUrl + "?rut="+ rut; // Modify this to match your API's endpoint structure
+        String apiUrl = contratosApiUrl + "/contractForContract?rut="+ rut; // Modify this to match your API's endpoint structure
+        ResponseEntity<List<ContratoDTO>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<ContratoDTO>>() {});
+        if (response.getStatusCode().is2xxSuccessful()) {
+            contratos = response.getBody();
+        }
+        return contratos;
+    }
+
+    @Override
+    public List<ContratoDTO> getContratosPorRutForPay(Integer rut, String schema) {
+        List<ContratoDTO> contratos = new ArrayList<>();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-schema", schema);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+        String apiUrl = contratosApiUrl + "/contractForPay?rut="+ rut; // Modify this to match your API's endpoint structure
         ResponseEntity<List<ContratoDTO>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<ContratoDTO>>() {});
         if (response.getStatusCode().is2xxSuccessful()) {
             contratos = response.getBody();
