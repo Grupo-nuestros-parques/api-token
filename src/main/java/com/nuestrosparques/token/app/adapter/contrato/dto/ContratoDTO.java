@@ -16,6 +16,42 @@ public class ContratoDTO implements Serializable {
     private String serie;
     private String base;
     private String numero;
+    private String capacidad;
+    private String sector;
+    private String sepultura;
+    private String area;
+
+    public String getCapacidad() {
+        return capacidad;
+    }
+
+    public void setCapacidad(String capacidad) {
+        this.capacidad = capacidad;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
+
+    public String getSepultura() {
+        return sepultura;
+    }
+
+    public void setSepultura(String sepultura) {
+        this.sepultura = sepultura;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
 
     public Integer getRut() {
         return rut;
