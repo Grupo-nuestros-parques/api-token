@@ -1,10 +1,13 @@
 package com.nuestrosparques.token.app.adapter.pagos.service.impl;
 
 import com.nuestrosparques.token.app.adapter.pagos.dto.CuponesDTO;
+import com.nuestrosparques.token.app.adapter.pagos.dto.RezagosDTO;
 import com.nuestrosparques.token.app.adapter.pagos.dto.PagosDTO;
+import com.nuestrosparques.token.app.adapter.pagos.mapper.RezagosMapper;
 import com.nuestrosparques.token.app.adapter.pagos.mapper.CuponesMapper;
 import com.nuestrosparques.token.app.adapter.pagos.mapper.PagosMapper;
 import com.nuestrosparques.token.app.adapter.pagos.response.CuponesResponse;
+import com.nuestrosparques.token.app.adapter.pagos.response.RezagosResponse;
 import com.nuestrosparques.token.app.adapter.pagos.response.PagosResponse;
 import com.nuestrosparques.token.app.adapter.pagos.service.PagoService;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,11 +33,13 @@ public class PagoServiceImpl implements PagoService {
 
     private final PagosMapper pagosMapper;
     private final CuponesMapper cuponesMapper;
+    private final RezagosMapper rezagosMapper;
 
-    public PagoServiceImpl(RestTemplate restTemplate, PagosMapper pagosMapper, CuponesMapper cuponesMapper) {
+    public PagoServiceImpl(RestTemplate restTemplate, PagosMapper pagosMapper, CuponesMapper cuponesMapper, RezagosMapper rezagosMapper) {
         this.restTemplate = restTemplate;
         this.pagosMapper = pagosMapper;
         this.cuponesMapper = cuponesMapper;
+        this.rezagosMapper = rezagosMapper;
     }
 
     @Override
@@ -78,6 +83,8 @@ public class PagoServiceImpl implements PagoService {
         return listaCupones;
     }
 
+
+
     @Override
     public List<CuponesDTO> getCuponesFuturosPorRut(String rut, Integer limitE, Integer limitF,  String schema) {
         List<CuponesResponse> cuponesResponsesF = new ArrayList<>();
@@ -100,5 +107,28 @@ public class PagoServiceImpl implements PagoService {
             return Collections.emptyList();
         }
         return listaCupones;
+    }
+
+    @Override
+    public List<RezagosDTO> getRezagosPorRut(String rut, String schema) {
+        List<RezagosResponse>  rezagosResponses = new ArrayList<>();
+        List<RezagosDTO> rezagosDTOS = new ArrayList<>();
+        List<RezagosDTO> listaRezagos = new ArrayList<>();
+        String apiUrlP = pagosApiUrl + "/rezagos?rut="+rut;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-schema", schema);
+        HttpEntity<?> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<List<RezagosResponse>> response = restTemplate.exchange(apiUrlP, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<List<RezagosResponse>>() {});
+        if(response.getStatusCode().is2xxSuccessful()){
+            rezagosResponses = response.getBody();
+            rezagosDTOS = rezagosMapper.transformRezagosToDTO(rezagosResponses);
+            rezagosDTOS.forEach(cupon ->{
+                listaRezagos.add(cupon);
+            });
+            System.out.println("listaRezagos = " + listaRezagos);
+        } else {
+            return Collections.emptyList();
+        }
+        return listaRezagos;
     }
 }

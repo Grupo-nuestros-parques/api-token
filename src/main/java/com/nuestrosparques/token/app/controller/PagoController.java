@@ -2,6 +2,7 @@ package com.nuestrosparques.token.app.controller;
 
 import com.nuestrosparques.token.app.adapter.pagos.dto.CuponesDTO;
 import com.nuestrosparques.token.app.adapter.pagos.dto.PagosDTO;
+import com.nuestrosparques.token.app.adapter.pagos.dto.RezagosDTO;
 import com.nuestrosparques.token.app.adapter.pagos.service.PagoService;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,5 +49,14 @@ public class PagoController {
             @RequestHeader("x-schema") String schema
     ){
         return pagoService.getCuponesFuturosPorRut(rut, limitE, limitF, schema.replaceAll("\"", ""));
+    }
+
+    @GetMapping("/rezagos")
+    @ResponseBody
+    public List<RezagosDTO> getRezagosPorRut(
+            @RequestParam("rut") String rut,
+            @RequestHeader("x-schema") String schema
+    ){
+        return pagoService.getRezagosPorRut(rut, schema.replaceAll("\"", ""));
     }
 }
