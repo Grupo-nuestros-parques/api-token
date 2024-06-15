@@ -3,7 +3,7 @@ package com.nuestrosparques.token.app.adapter.pagos.response;
 public class RezagosResponse {
 
     private Integer folio;
-    private String  fechaPago;
+    private String fechaPago;
     private String tipoMov;
     private Integer monto;
     private String cuotasPag;
@@ -12,6 +12,7 @@ public class RezagosResponse {
     private String descripcionTipoMovimiento;
     private String nombre;
     private String apPaterno;
+    private String base;
 
     public Integer getFolio() {
         return folio;
@@ -91,5 +92,13 @@ public class RezagosResponse {
 
     public void setApPaterno(String apPaterno) {
         this.apPaterno = apPaterno;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
     }
 }

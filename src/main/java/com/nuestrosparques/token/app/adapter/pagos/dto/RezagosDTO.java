@@ -11,6 +11,7 @@ public class RezagosDTO {
     private String descripcionTipoMovimiento;
     private String nombre;
     private String apPaterno;
+    private String base;
 
     public Integer getFolio() {
         return folio;
@@ -90,5 +91,13 @@ public class RezagosDTO {
 
     public void setApPaterno(String apPaterno) {
         this.apPaterno = apPaterno;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public void setBase(String base) {
+        this.base = base;
     }
 }

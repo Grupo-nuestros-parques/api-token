@@ -24,6 +24,7 @@ public class RezagosMapper {
             rezagosDTO.setDescripcionTipoMovimiento(resp.getDescripcionTipoMovimiento());
             rezagosDTO.setNombre(resp.getNombre());
             rezagosDTO.setApPaterno(resp.getApPaterno());
+            rezagosDTO.setBase(resp.getBase());
             rezagos.add(rezagosDTO);
         });
 
