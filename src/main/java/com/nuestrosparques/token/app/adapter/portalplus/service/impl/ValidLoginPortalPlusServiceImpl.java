@@ -5,6 +5,7 @@ import com.nuestrosparques.token.app.adapter.portalplus.dto.LoginPortalPlusDTO;
 import com.nuestrosparques.token.app.adapter.portalplus.request.UpdateProfile;
 import com.nuestrosparques.token.app.adapter.portalplus.service.ValidLoginPortalPlusService;
 import com.nuestrosparques.token.app.request.CrematorioScanRequest;
+import com.nuestrosparques.token.app.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -12,8 +13,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import com.aventrix.jnanoid.jnanoid.NanoIdUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +31,9 @@ public class ValidLoginPortalPlusServiceImpl implements ValidLoginPortalPlusServ
 
     private final RestTemplate restTemplate;
 
-    public ValidLoginPortalPlusServiceImpl(RestTemplate restTemplate) {
+    public ValidLoginPortalPlusServiceImpl(
+            RestTemplate restTemplate
+    ) {
         this.restTemplate = restTemplate;
     }
 
@@ -37,8 +44,14 @@ public class ValidLoginPortalPlusServiceImpl implements ValidLoginPortalPlusServ
         ResponseEntity<LoginPortalPlusDTO> response = restTemplate.exchange(apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<LoginPortalPlusDTO>() {});
         if (response.getStatusCode().is2xxSuccessful()) {
             valid = response.getBody();
+            String nanoId = generateNanoId();
+            valid.setTokenSession(nanoId);
         }
         return valid;
+    }
+
+    public static String generateNanoId() {
+        return NanoIdUtils.randomNanoId(); // Genera un NanoID con la configuración predeterminada
     }
 
     @Override

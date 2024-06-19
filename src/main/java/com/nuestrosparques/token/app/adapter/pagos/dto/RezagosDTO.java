@@ -12,6 +12,7 @@ public class RezagosDTO {
     private String nombre;
     private String apPaterno;
     private String base;
+    private String tipoCobroDescripcion;
 
     public Integer getFolio() {
         return folio;
@@ -99,5 +100,13 @@ public class RezagosDTO {
 
     public void setBase(String base) {
         this.base = base;
+    }
+
+    public String getTipoCobroDescripcion() {
+        return tipoCobroDescripcion;
+    }
+
+    public void setTipoCobroDescripcion(String tipoCobroDescripcion) {
+        this.tipoCobroDescripcion = tipoCobroDescripcion;
     }
 }

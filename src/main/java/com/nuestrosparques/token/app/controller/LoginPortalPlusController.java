@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nuestrosparques.token.app.adapter.tracking.service.TrackingService;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,17 +25,30 @@ import java.util.Map;
 public class LoginPortalPlusController {
 
     private final ValidLoginPortalPlusService validLoginPortalPlusService;
+    private TrackingService trackingService;
 
-    public LoginPortalPlusController(ValidLoginPortalPlusService validLoginPortalPlusService) {
+    public LoginPortalPlusController(
+            ValidLoginPortalPlusService validLoginPortalPlusService,
+            TrackingService trackingService
+    ) {
         this.validLoginPortalPlusService = validLoginPortalPlusService;
+        this.trackingService = trackingService;
     }
 
     @GetMapping("/rut/{rut}")
     @ResponseBody
     LoginPortalPlusDTO getDataFolioCrematorio(
             @PathVariable("rut") Integer rut,
-            @RequestParam(value = "password") String password){
-        return validLoginPortalPlusService.validateLogin(rut, password);
+            @RequestParam(value = "password") String password
+    ){
+        LoginPortalPlusDTO loginPortalPlusDTO = validLoginPortalPlusService.validateLogin(rut, password);
+        trackingService.registerTracking(
+                "Inicio de sessión",
+                rut,
+                loginPortalPlusDTO.getTokenSession(),
+                loginPortalPlusDTO.getAgentes().getNombre() + " " +loginPortalPlusDTO.getAgentes().getApellidoPaterno()
+        );
+        return loginPortalPlusDTO;
     }
 
     @GetMapping("/rut/{rut}/email")
@@ -65,7 +80,18 @@ public class LoginPortalPlusController {
     }
 
     @PostMapping(value = "/agent/update-profile")
-    public ResponseEntity<UpdateProfile> updateProfile(@RequestBody UpdateProfile updateProfile) {
+    public ResponseEntity<UpdateProfile> updateProfile(
+            @RequestBody UpdateProfile updateProfile,
+            @RequestParam("rutAgente") String rutAgente,
+            @RequestParam("tokenSession") String tokenSession,
+            @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
+    ) {
+        trackingService.registerTracking(
+                "Actualizar foto de perfil",
+                Integer.valueOf(rutAgente),
+                tokenSession,
+                nombreCompletoAgente
+        );
         return new ResponseEntity<UpdateProfile>(validLoginPortalPlusService.updateProfile(updateProfile), HttpStatus.OK);
     }
 }

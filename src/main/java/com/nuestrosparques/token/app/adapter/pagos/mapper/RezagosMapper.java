@@ -25,6 +25,8 @@ public class RezagosMapper {
             rezagosDTO.setNombre(resp.getNombre());
             rezagosDTO.setApPaterno(resp.getApPaterno());
             rezagosDTO.setBase(resp.getBase());
+            rezagosDTO.setTipoCobroDescripcion(resp.getTipoCobroDescripcion());
+
             rezagos.add(rezagosDTO);
         });
 
