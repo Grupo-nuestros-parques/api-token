@@ -32,12 +32,12 @@ public class TrackingController {
             @RequestParam("tokenSession") String tokenSession,
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Buscar tracking en Página Trackings",
                 Integer.valueOf(rutAgente),
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return trackingService.getTrackings(schema.replaceAll("\"", ""), page, size, rut, fechaInicio, fechaFin);
     }
 

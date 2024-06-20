@@ -30,12 +30,12 @@ public class ContratoController {
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
         System.out.println("rut = " + rut + "schema = " + schema);
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Buscar contrato en Pagina Contratos",
                 Integer.valueOf(rutAgente),
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return contratoService.getContratosPorRutForContract(rut,schema.replaceAll("\"", ""));
     }
 
@@ -49,12 +49,12 @@ public class ContratoController {
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
         System.out.println("rut = " + rut + "schema = " + schema);
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Buscar contrato en Pagina de buscar Pagos",
                 Integer.valueOf(rutAgente),
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return contratoService.getContratosPorRutForPay(rut,schema.replaceAll("\"", ""));
     }
 }

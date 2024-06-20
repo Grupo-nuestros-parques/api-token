@@ -38,12 +38,12 @@ public class ObituarioController {
             @RequestParam("tokenSession") String tokenSession,
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Buscar Obituario",
                 Integer.valueOf(rutAgente),
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return obituarioService.obtenerTodosObituariosPorFechaYParque(fechaInicio, fechaFin, parque);
     }
 
@@ -57,12 +57,12 @@ public class ObituarioController {
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
 
     ){
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Buscar Cinerario",
                 Integer.valueOf(rutAgente),
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return obituarioService.encontrarTodosObiturariosCinerario(fechaInicio, fechaFin);
     }
 }

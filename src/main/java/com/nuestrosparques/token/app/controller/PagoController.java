@@ -36,12 +36,12 @@ public class PagoController {
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ) {
         System.out.println("schema = " + schema.replaceAll("\"", ""));
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Buscar pagos en Página Contratos",
                 rutAgente,
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return pagoService.getUltimosPagosPorContrato(base,serie,numero,schema.replaceAll("\"", ""));
     }
 
@@ -56,12 +56,12 @@ public class PagoController {
             @RequestParam("tokenSession") String tokenSession,
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Consultando Cupones Pendientes en pagina Pagos",
                 rutAgente,
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return pagoService.getCuponesPendientesPorRut(rut, limitE, limitF, schema.replaceAll("\"", ""));
     }
 
@@ -76,12 +76,12 @@ public class PagoController {
             @RequestParam("tokenSession") String tokenSession,
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Consultando Cupones Futuros en pagina Pagos",
                 rutAgente,
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return pagoService.getCuponesFuturosPorRut(rut, limitE, limitF, schema.replaceAll("\"", ""));
     }
 
@@ -94,12 +94,12 @@ public class PagoController {
             @RequestParam("tokenSession") String tokenSession,
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
-        trackingService.registerTracking(
+        /*trackingService.registerTracking(
                 "Buscar pagos Rezagos",
                 rutAgente,
                 tokenSession,
                 nombreCompletoAgente
-        );
+        );*/
         return pagoService.getRezagosPorRut(rut, schema.replaceAll("\"", ""));
     }
 }
