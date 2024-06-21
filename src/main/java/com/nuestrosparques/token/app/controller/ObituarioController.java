@@ -33,10 +33,11 @@ public class ObituarioController {
     List<ObituarioDTO> findAll(
             @RequestParam("fechaInicio") String fechaInicio,
             @RequestParam("fechaFin") String fechaFin,
-            @RequestParam("parque") Integer parque,
-            @RequestParam("rutAgente") String rutAgente,
-            @RequestParam("tokenSession") String tokenSession,
-            @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
+            @RequestParam("parque") Integer parque
+            //,
+            //@RequestParam("rutAgente") String rutAgente,
+            //@RequestParam("tokenSession") String tokenSession,
+            //@RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
         /*trackingService.registerTracking(
                 "Buscar Obituario",
@@ -51,10 +52,11 @@ public class ObituarioController {
     @ResponseBody
     List<ObituarioCrematorioDTO> findAll(
             @RequestParam("fechaInicio") String fechaInicio,
-            @RequestParam("fechaFin") String fechaFin,
-            @RequestParam("rutAgente") String rutAgente,
-            @RequestParam("tokenSession") String tokenSession,
-            @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
+            @RequestParam("fechaFin") String fechaFin
+            //,
+            //@RequestParam("rutAgente") String rutAgente,
+            //@RequestParam("tokenSession") String tokenSession,
+            //@RequestParam("nombreCompletoAgente") String nombreCompletoAgente
 
     ){
         /*trackingService.registerTracking(
