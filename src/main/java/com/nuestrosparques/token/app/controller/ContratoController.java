@@ -24,18 +24,9 @@ public class ContratoController {
     @ResponseBody
     public List<ContratoDTO> getContratosPorRutContratoPage(
             @RequestParam("rut" )Integer rut,
-            @RequestHeader("x-schema") String schema,
-            @RequestParam("rutAgente") String rutAgente,
-            @RequestParam("tokenSession") String tokenSession,
-            @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
+            @RequestHeader("x-schema") String schema
     ){
         System.out.println("rut = " + rut + "schema = " + schema);
-        /*trackingService.registerTracking(
-                "Buscar contrato en Pagina Contratos",
-                Integer.valueOf(rutAgente),
-                tokenSession,
-                nombreCompletoAgente
-        );*/
         return contratoService.getContratosPorRutForContract(rut,schema.replaceAll("\"", ""));
     }
 
@@ -43,18 +34,9 @@ public class ContratoController {
     @ResponseBody
     public List<ContratoDTO> getContratosPorRutPagoPage(
             @RequestParam("rut" )Integer rut,
-            @RequestHeader("x-schema") String schema,
-            @RequestParam("rutAgente") String rutAgente,
-            @RequestParam("tokenSession") String tokenSession,
-            @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
+            @RequestHeader("x-schema") String schema
     ){
         System.out.println("rut = " + rut + "schema = " + schema);
-        /*trackingService.registerTracking(
-                "Buscar contrato en Pagina de buscar Pagos",
-                Integer.valueOf(rutAgente),
-                tokenSession,
-                nombreCompletoAgente
-        );*/
         return contratoService.getContratosPorRutForPay(rut,schema.replaceAll("\"", ""));
     }
 }

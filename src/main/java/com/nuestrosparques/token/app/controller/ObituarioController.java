@@ -34,17 +34,7 @@ public class ObituarioController {
             @RequestParam("fechaInicio") String fechaInicio,
             @RequestParam("fechaFin") String fechaFin,
             @RequestParam("parque") Integer parque
-            //,
-            //@RequestParam("rutAgente") String rutAgente,
-            //@RequestParam("tokenSession") String tokenSession,
-            //@RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ){
-        /*trackingService.registerTracking(
-                "Buscar Obituario",
-                Integer.valueOf(rutAgente),
-                tokenSession,
-                nombreCompletoAgente
-        );*/
         return obituarioService.obtenerTodosObituariosPorFechaYParque(fechaInicio, fechaFin, parque);
     }
 
@@ -53,18 +43,8 @@ public class ObituarioController {
     List<ObituarioCrematorioDTO> findAll(
             @RequestParam("fechaInicio") String fechaInicio,
             @RequestParam("fechaFin") String fechaFin
-            //,
-            //@RequestParam("rutAgente") String rutAgente,
-            //@RequestParam("tokenSession") String tokenSession,
-            //@RequestParam("nombreCompletoAgente") String nombreCompletoAgente
 
     ){
-        /*trackingService.registerTracking(
-                "Buscar Cinerario",
-                Integer.valueOf(rutAgente),
-                tokenSession,
-                nombreCompletoAgente
-        );*/
         return obituarioService.encontrarTodosObiturariosCinerario(fechaInicio, fechaFin);
     }
 }

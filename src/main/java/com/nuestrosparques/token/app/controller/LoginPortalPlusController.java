@@ -3,6 +3,7 @@ package com.nuestrosparques.token.app.controller;
 import com.nuestrosparques.token.app.adapter.portalplus.dto.LoginPortalPlusDTO;
 import com.nuestrosparques.token.app.adapter.portalplus.request.UpdateProfile;
 import com.nuestrosparques.token.app.adapter.portalplus.service.ValidLoginPortalPlusService;
+import com.nuestrosparques.token.app.adapter.tracking.service.TrackingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nuestrosparques.token.app.adapter.tracking.service.TrackingService;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/portal-plus")
@@ -73,7 +70,6 @@ public class LoginPortalPlusController {
         return new ResponseEntity<Integer>(validLoginPortalPlusService.restoreVerifyPassword(token), HttpStatus.OK);
     }
 
-
     @PostMapping(value = "/restore/{token}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Integer> restorePassword(@PathVariable("token") String token, @RequestBody String clave ) {
         return new ResponseEntity<Integer>(validLoginPortalPlusService.restorePassword(token, clave), HttpStatus.OK);
@@ -81,17 +77,8 @@ public class LoginPortalPlusController {
 
     @PostMapping(value = "/agent/update-profile")
     public ResponseEntity<UpdateProfile> updateProfile(
-            @RequestBody UpdateProfile updateProfile,
-            @RequestParam("rutAgente") String rutAgente,
-            @RequestParam("tokenSession") String tokenSession,
-            @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
+            @RequestBody UpdateProfile updateProfile
     ) {
-        /*trackingService.registerTracking(
-                "Actualizar foto de perfil",
-                Integer.valueOf(rutAgente),
-                tokenSession,
-                nombreCompletoAgente
-        );*/
         return new ResponseEntity<UpdateProfile>(validLoginPortalPlusService.updateProfile(updateProfile), HttpStatus.OK);
     }
 }
