@@ -46,6 +46,13 @@ public class ValidLoginPortalPlusServiceImpl implements ValidLoginPortalPlusServ
             valid = response.getBody();
             String nanoId = generateNanoId();
             valid.setTokenSession(nanoId);
+            // URL para obtener los roles
+            String apiUrlRoles = portalPlusApiUrl + "/mantenedor/get-roles?rut=" + rut;
+            ResponseEntity<List<String>> rolesResponse = restTemplate.exchange(apiUrlRoles, HttpMethod.GET, null, new ParameterizedTypeReference<List<String>>() {});
+            if (rolesResponse.getStatusCode().is2xxSuccessful()) {
+                List<String> roles = rolesResponse.getBody();
+                valid.setRoles(roles);
+            }
         }
         return valid;
     }

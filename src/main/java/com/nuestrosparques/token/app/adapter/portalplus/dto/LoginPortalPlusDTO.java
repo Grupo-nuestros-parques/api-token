@@ -1,6 +1,7 @@
 package com.nuestrosparques.token.app.adapter.portalplus.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class LoginPortalPlusDTO implements Serializable {
 
@@ -9,6 +10,8 @@ public class LoginPortalPlusDTO implements Serializable {
     private boolean primerLogin;
     private String schema;
     private String tokenSession;
+    private List<String> roles;
+
 
     public boolean isTrabajadorExiste() {
         return trabajadorExiste;
@@ -48,5 +51,13 @@ public class LoginPortalPlusDTO implements Serializable {
 
     public void setTokenSession(String tokenSession) {
         this.tokenSession = tokenSession;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }

@@ -42,13 +42,12 @@ public class TrackingController {
             @RequestParam("tokenSession") String tokenSession,
             @RequestParam("nombreCompletoAgente") String nombreCompletoAgente
     ) {
-        /*return trackingService.registerTracking(
+        return trackingService.registerTracking(
                 pageBreadCrumbs,
                 Integer.valueOf(rutAgente),
                 tokenSession,
                 nombreCompletoAgente
-        );*/
-        return TRUE;
+        );
     }
 
 }

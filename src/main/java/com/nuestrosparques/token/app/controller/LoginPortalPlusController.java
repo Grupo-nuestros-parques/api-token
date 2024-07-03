@@ -39,12 +39,12 @@ public class LoginPortalPlusController {
             @RequestParam(value = "password") String password
     ){
         LoginPortalPlusDTO loginPortalPlusDTO = validLoginPortalPlusService.validateLogin(rut, password);
-        /*trackingService.registerTracking(
+        trackingService.registerTracking(
                 "Inicio de sessión",
                 rut,
                 loginPortalPlusDTO.getTokenSession(),
                 loginPortalPlusDTO.getAgentes().getNombre() + " " +loginPortalPlusDTO.getAgentes().getApellidoPaterno()
-        );*/
+        );
         return loginPortalPlusDTO;
     }
 

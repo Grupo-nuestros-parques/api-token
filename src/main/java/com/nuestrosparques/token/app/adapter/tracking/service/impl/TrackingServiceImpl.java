@@ -85,8 +85,10 @@ public class TrackingServiceImpl implements TrackingService {
             }
         }
 
-        ResponseEntity<PaginatedResponse<TrackingResponse>> response = restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<PaginatedResponse<TrackingResponse>>() {
-        });
+        ResponseEntity<PaginatedResponse<TrackingResponse>> response = restTemplate.exchange(
+                apiUrl, HttpMethod.GET, httpEntity,
+                new ParameterizedTypeReference<PaginatedResponse<TrackingResponse>>() { }
+        );
         if (response.getStatusCode().is2xxSuccessful()) {
             PaginatedResponse<TrackingResponse> paginatedResponse = response.getBody();
             if (paginatedResponse != null) {
@@ -96,20 +98,7 @@ public class TrackingServiceImpl implements TrackingService {
             return paginatedResponse.toPage();
         } else {
             throw new RuntimeException("La llamada al servicio web (Datasource) falló con el código de estado: " + response.getStatusCodeValue());
-
-            //trackings = response.getBody();
-
-            // Aquí recorremos y modificamos el dato.
-            /*SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-
-            for (TrackingResponse tracking : trackings) {
-                if (tracking.getCreatedAt() != null) {
-                    String formattedDate = formatter.format(tracking.getCreatedAt());
-                    tracking.setFormattedCreatedAt(formattedDate);
-                }
-            }*/
         }
-        //return trackings;
     }
 
     private String formatDateToISO(String dateString) throws ParseException {
