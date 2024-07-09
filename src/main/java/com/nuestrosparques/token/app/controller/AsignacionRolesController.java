@@ -1,6 +1,8 @@
 package com.nuestrosparques.token.app.controller;
 
 import com.nuestrosparques.token.app.adapter.mantenedor.response.UserRolesResponse;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -14,6 +16,7 @@ import com.nuestrosparques.token.app.adapter.mantenedor.service.AsignacionRolesS
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.io.File;
 import java.util.*;
 
 @RestController
@@ -47,6 +50,65 @@ public class AsignacionRolesController {
                 fechaAsignacionHasta, fechaRevocacionDesde, fechaRevocacionHasta
         );
     }
+
+    @GetMapping("/getRolesAsignadosListado")
+    @ResponseBody
+    public List<AsignacionRolesResponse> getRolesAsignadosListado(
+            @RequestHeader("x-schema") String schema,
+            @RequestParam(required = false) Integer rutAsignador,
+            @RequestParam(required = false) Integer rutAsignado,
+            @RequestParam(required = false) Long idRol,
+            @RequestParam(required = false) String fechaAsignacionDesde,
+            @RequestParam(required = false) String fechaAsignacionHasta,
+            @RequestParam(required = false) String fechaRevocacionDesde,
+            @RequestParam(required = false) String fechaRevocacionHasta
+    ) {
+        return asignacionRolesService.getRolesAsignadosListado(
+                rutAsignador, rutAsignado, idRol, fechaAsignacionDesde,
+                fechaAsignacionHasta, fechaRevocacionDesde, fechaRevocacionHasta
+        );
+    }
+
+    @GetMapping("/downloadRolesAsignadosCSV")
+    public ResponseEntity<Resource> downloadRolesAsignadosCSV(
+            @RequestHeader("x-schema") String schema,
+            @RequestParam(required = false) Integer rutAsignador,
+            @RequestParam(required = false) Integer rutAsignado,
+            @RequestParam(required = false) Long idRol,
+            @RequestParam(required = false) String fechaAsignacionDesde,
+            @RequestParam(required = false) String fechaAsignacionHasta,
+            @RequestParam(required = false) String fechaRevocacionDesde,
+            @RequestParam(required = false) String fechaRevocacionHasta
+    ) {
+        List<AsignacionRolesResponse> listado = asignacionRolesService.getRolesAsignadosListado(
+                rutAsignador, rutAsignado, idRol, fechaAsignacionDesde, fechaAsignacionHasta, fechaRevocacionDesde, fechaRevocacionHasta
+        );
+
+        // Obtener la ruta absoluta del proyecto
+        String projectPath = System.getProperty("user.dir");
+        // Ruta completa al directorio "files" dentro del proyecto
+        String filesDirPath = projectPath + "/files";
+        String csvFilePath = filesDirPath + "/archivo.csv";
+
+        // Crear el directorio si no existe
+        File filesDir = new File(filesDirPath);
+        if (!filesDir.exists()) {
+            filesDir.mkdirs(); // Crea el directorio y los directorios padres si no existen
+        }
+
+        // Generar el archivo CSV
+        asignacionRolesService.exportToCSV(listado, csvFilePath);
+
+        // Preparar la respuesta para descargar el archivo CSV
+        File file = new File(csvFilePath);
+        Resource resource = new FileSystemResource(file);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
+                .contentType(MediaType.parseMediaType("application/csv"))
+                .body(resource);
+    }
+
 
     @GetMapping("/consultar-rol-por-rut")
     @ResponseBody
