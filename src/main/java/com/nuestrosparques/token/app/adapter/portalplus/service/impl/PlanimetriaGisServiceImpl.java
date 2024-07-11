@@ -40,8 +40,8 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
     }
 
     @Override
-    public List<BasePlaniDTO> findAllByArea() {
-        String apiUrl = portalPlusApiUrl + "/baseplani/area";
+    public List<BasePlaniDTO> findAllByArea(Integer codParque) {
+        String apiUrl = portalPlusApiUrl + "/baseplani/area/codParque/" + codParque;
         ResponseEntity<List<BasePlaniDTO>> response =
                 restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<BasePlaniDTO> >(){});
@@ -71,6 +71,34 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
         ResponseEntity<List<BasePlaniDTO>> response =
                 restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<BasePlaniDTO> >(){});
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<GeolocationDTO> findLocationsBySectorAndSepultura(String sector, String sepultura, String coordenada) {
+        String apiUrl = portalPlusApiUrl + "/planimetria-gis/rut"+
+                "?sector=" + sector + "&sepultura=" + sepultura + "&coordenada=" + coordenada;
+        ResponseEntity<List<GeolocationDTO>> response =
+                restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                        new ParameterizedTypeReference<List<GeolocationDTO> >(){});
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<GeolocationDTO> findLocationsByLatitudAndLongitud(String latitud, String longitud) {
+        String apiUrl = portalPlusApiUrl + "/planimetria-gis/proximidad"+
+                "?latitud=" + latitud + "&longitud=" + longitud;
+        ResponseEntity<List<GeolocationDTO>> response =
+                restTemplate.exchange(apiUrl, HttpMethod.GET, null,
+                        new ParameterizedTypeReference<List<GeolocationDTO> >(){});
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }else {

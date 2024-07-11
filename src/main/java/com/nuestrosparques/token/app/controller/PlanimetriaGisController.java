@@ -32,9 +32,9 @@ public class PlanimetriaGisController {
         return planimetriaGisService.findGeolocationForSector(parque, sector, estado);
     }
 
-    @GetMapping("/baseplani/area")
-    List<BasePlaniDTO> findAllByArea(){
-        return planimetriaGisService.findAllByArea();
+    @GetMapping("/baseplani/area/codParque/{codParque}")
+    List<BasePlaniDTO> findAllByArea(@PathVariable("codParque") Integer codParque){
+        return planimetriaGisService.findAllByArea(codParque);
     }
 
     @GetMapping("/baseplani/area/{area}")
@@ -45,5 +45,24 @@ public class PlanimetriaGisController {
     @GetMapping("/baseplani/area/{area}/sector/{sector}")
     List<BasePlaniDTO> findAllByAreaAndSector(@PathVariable("area") String area, @PathVariable("sector") String sector){
         return planimetriaGisService.findAllByAreaAndSector(area, sector);
+    }
+
+    @GetMapping("/rut")
+    @ResponseBody
+    List<GeolocationDTO> getLocationsBySectorAndSepultura(
+            @RequestParam(value = "sector", required = false) String sector,
+            @RequestParam(value = "sepultura", required = false) String sepultura,
+            @RequestParam(value = "coordenada", required = false) String coordenada
+    ){
+        return planimetriaGisService.findLocationsBySectorAndSepultura(sector, sepultura, coordenada);
+    }
+
+    @GetMapping("/proximidad")
+    @ResponseBody
+    List<GeolocationDTO> getLocationsByLatitudAndLongitud(
+            @RequestParam(value = "latitud") String latitud,
+            @RequestParam(value = "longitud", required = false) String longitud
+    ){
+        return planimetriaGisService.findLocationsByLatitudAndLongitud(latitud, longitud);
     }
 }
