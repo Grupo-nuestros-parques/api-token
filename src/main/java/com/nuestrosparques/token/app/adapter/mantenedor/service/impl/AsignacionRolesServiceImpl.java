@@ -145,20 +145,18 @@ public class AsignacionRolesServiceImpl implements AsignacionRolesService {
     public void exportToCSV(List<AsignacionRolesResponse> listado, String filePath) {
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
             // Escribir el encabezado del CSV
-            String[] header = { "ID", "Rut Asignador", "Nombre Asignador", "Rut Asignado", "Nombre Asignado", "Rol", "Fecha Asignacion", "Fecha Revocacion" };
+            String[] header = { "ID", "Rut", "Nombre", "Rol", "Fecha Asignacion", "Fecha Revocacion" };
             writer.writeNext(header);
 
             // Escribir datos de cada objeto AsignacionRolesResponse en el CSV
             for (AsignacionRolesResponse asignacion : listado) {
                 String[] data = {
                         asignacion.getId().toString(),
-                        asignacion.getRutAsignador().getRut(),
-                        asignacion.getRutAsignador().getNombre(),
                         asignacion.getRutAsignado().getRut(),
                         asignacion.getRutAsignado().getNombre(),
                         asignacion.getRole().getNombre(),
                         asignacion.getFechaAsignacion(),
-                        asignacion.getFechaRevocacion()
+                        (asignacion.getFechaRevocacion() != null && !asignacion.getFechaRevocacion().isEmpty()) ? asignacion.getFechaRevocacion() : "Rol Vigente"
                 };
                 writer.writeNext(data);
             }

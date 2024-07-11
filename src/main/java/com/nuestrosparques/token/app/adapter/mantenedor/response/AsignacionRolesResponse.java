@@ -7,7 +7,7 @@ public class AsignacionRolesResponse {
 
     private Long id;
 
-    private Rut rutAsignador;
+    //private Rut rutAsignador;
 
     private Rut rutAsignado;
 
@@ -30,13 +30,13 @@ public class AsignacionRolesResponse {
         this.id = id;
     }
 
-    public Rut getRutAsignador() {
+    /*public Rut getRutAsignador() {
         return rutAsignador;
-    }
+    }*/
 
-    public void setRutAsignador(Rut rutAsignador) {
+    /*public void setRutAsignador(Rut rutAsignador) {
         this.rutAsignador = rutAsignador;
-    }
+    }*/
 
     public Rut getRutAsignado() {
         return rutAsignado;

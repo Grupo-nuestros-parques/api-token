@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Archivos para descargas ###
+/files/

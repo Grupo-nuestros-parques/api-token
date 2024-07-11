@@ -1,9 +1,11 @@
 package com.nuestrosparques.token.app.adapter.tracking.service.impl;
 
+import com.nuestrosparques.token.app.adapter.mantenedor.response.AsignacionRolesResponse;
 import com.nuestrosparques.token.app.adapter.tracking.request.TrackingRequest;
 import com.nuestrosparques.token.app.adapter.tracking.response.PaginatedResponse;
 import com.nuestrosparques.token.app.adapter.tracking.response.TrackingResponse;
 import com.nuestrosparques.token.app.adapter.tracking.service.TrackingService;
+import com.opencsv.CSVWriter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,6 +102,65 @@ public class TrackingServiceImpl implements TrackingService {
             return paginatedResponse.toPage();
         } else {
             throw new RuntimeException("La llamada al servicio web (Datasource) falló con el código de estado: " + response.getStatusCodeValue());
+        }
+    }
+
+
+    @Override
+    public List<TrackingResponse> getListTrackings(String schema, Integer rut, String fechaInicio, String fechaFin) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String apiUrl = portalPlusApiUrl + "/getTrackingsList";
+
+        apiUrl += "?";
+
+        if (rut != null) {
+            apiUrl += "rut=" + rut;
+        }
+        if (fechaInicio != null) {
+            apiUrl += "&fechaInicio=" + fechaInicio;
+        }
+        if (fechaFin != null) {
+            apiUrl += "&fechaFin=" + fechaFin;
+        }
+
+        ResponseEntity<List<TrackingResponse>> response = restTemplate.exchange(
+                apiUrl,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<List<TrackingResponse>>() {}
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            List<TrackingResponse> listedResponse = response.getBody();
+            return listedResponse;
+        } else {
+            throw new RuntimeException("La llamada al servicio web (Por) falló con el código de estado: " + response.getStatusCodeValue());
+        }
+    }
+
+    @Override
+    public void exportToCSV(List<TrackingResponse> listado, String filePath) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
+            // Escribir el encabezado del CSV
+            String[] header = { "ID", "Rut", "Nombre", "Función", "Token de Session", "Fecha Asignacion" };
+            writer.writeNext(header);
+
+            // Escribir datos de cada objeto AsignacionRolesResponse en el CSV
+            for (TrackingResponse tracking : listado) {
+                String[] data = {
+                        tracking.getId() != null ? tracking.getId().toString() : "",
+                        tracking.getRut() != null ? tracking.getRut().toString() : "",
+                        tracking.getNombreCompletoAgente() != null ? tracking.getNombreCompletoAgente().toString() : "",
+                        tracking.getNombreFuncion() != null ? tracking.getNombreFuncion().toString() : "",
+                        tracking.getTokenSession() != null ? tracking.getTokenSession().toString() : "",
+                        tracking.getCreatedAt() != null ? tracking.getCreatedAt().toString() : ""
+                };
+                writer.writeNext(data);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al escribir en el archivo CSV", e);
         }
     }
 
