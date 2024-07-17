@@ -17,6 +17,8 @@ public class GeolocationDTO implements Serializable {
     private String area;
     private String latitud;
     private String longitud;
+    private boolean firstLocation;
+    private String nombreParque;
 
     public Integer getCodParque() {
         return codParque;
@@ -120,5 +122,21 @@ public class GeolocationDTO implements Serializable {
 
     public void setLongitud(String longitud) {
         this.longitud = longitud;
+    }
+
+    public boolean isFirstLocation() {
+        return firstLocation;
+    }
+
+    public void setFirstLocation(boolean firstLocation) {
+        this.firstLocation = firstLocation;
+    }
+
+    public String getNombreParque() {
+        return nombreParque;
+    }
+
+    public void setNombreParque(String nombreParque) {
+        this.nombreParque = nombreParque;
     }
 }

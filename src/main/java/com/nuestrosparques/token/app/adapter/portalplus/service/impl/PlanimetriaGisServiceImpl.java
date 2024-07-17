@@ -2,6 +2,7 @@ package com.nuestrosparques.token.app.adapter.portalplus.service.impl;
 
 import com.nuestrosparques.token.app.adapter.portalplus.dto.BasePlaniDTO;
 import com.nuestrosparques.token.app.adapter.portalplus.dto.GeolocationDTO;
+import com.nuestrosparques.token.app.adapter.portalplus.mapper.PlanimetriaMapper;
 import com.nuestrosparques.token.app.adapter.portalplus.service.PlanimetriaGisService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -20,9 +21,11 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
     private String portalPlusApiUrl; // This would be your API endpoint
 
     private final RestTemplate restTemplate;
+    private final PlanimetriaMapper planimetriaMapper;
 
-    public PlanimetriaGisServiceImpl(RestTemplate restTemplate) {
+    public PlanimetriaGisServiceImpl(RestTemplate restTemplate, PlanimetriaMapper planimetriaMapper) {
         this.restTemplate = restTemplate;
+        this.planimetriaMapper = planimetriaMapper;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
                 restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<GeolocationDTO> >(){});
         if (response.getStatusCode().is2xxSuccessful()) {
-            return response.getBody();
+            return planimetriaMapper.transformPlanimetriaDTO(response.getBody());
         }else {
             return new ArrayList<>();
         }
@@ -86,7 +89,7 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
                 restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<GeolocationDTO> >(){});
         if (response.getStatusCode().is2xxSuccessful()) {
-            return response.getBody();
+            return planimetriaMapper.transformPlanimetriaDTO(response.getBody());
         }else {
             return new ArrayList<>();
         }
