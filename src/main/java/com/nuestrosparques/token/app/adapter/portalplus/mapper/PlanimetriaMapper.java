@@ -37,6 +37,7 @@ public class PlanimetriaMapper {
             geolocationDTO.setSector(geo.getSector());
             geolocationDTO.setSerie(geo.getSerie());
             geolocationDTO.setTipoConst(geo.getTipoConst());
+            geolocationDTO.setSepultura(geo.getSepultura());
             locations.add(geolocationDTO);
         });
         return locations;

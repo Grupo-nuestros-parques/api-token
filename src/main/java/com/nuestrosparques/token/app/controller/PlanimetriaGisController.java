@@ -5,6 +5,7 @@ import com.nuestrosparques.token.app.adapter.portalplus.dto.GeolocationDTO;
 import com.nuestrosparques.token.app.adapter.portalplus.service.PlanimetriaGisService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,9 +38,9 @@ public class PlanimetriaGisController {
         return planimetriaGisService.findAllByArea(codParque);
     }
 
-    @GetMapping("/baseplani/area/{area}")
-    List<BasePlaniDTO> findAllSectorByArea(@PathVariable("area") String area){
-        return planimetriaGisService.findAllSectorByArea(area);
+    @GetMapping("/baseplani/area/{area}/producto/{codigoProducto}")
+    List<BasePlaniDTO> findAllSectorByArea(@PathVariable("area") String area, @PathVariable("codigoProducto") String codigoProducto){
+        return planimetriaGisService.findAllSectorByArea(area, codigoProducto);
     }
 
     @GetMapping("/baseplani/area/{area}/sector/{sector}")
@@ -64,5 +65,11 @@ public class PlanimetriaGisController {
             @RequestParam(value = "longitud", required = false) String longitud
     ){
         return planimetriaGisService.findLocationsByLatitudAndLongitud(latitud, longitud);
+    }
+
+    @GetMapping("/contratos/sepultura")
+    @ResponseBody
+    List<String> getSepulturaContratosPorRut(@RequestParam("rut") Integer rut, @RequestHeader("x-schema") String schema){
+        return planimetriaGisService.getSepulturaContratosPorRut(rut, schema);
     }
 }

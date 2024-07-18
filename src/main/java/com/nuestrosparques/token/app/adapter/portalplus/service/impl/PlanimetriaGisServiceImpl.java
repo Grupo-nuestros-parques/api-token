@@ -6,6 +6,8 @@ import com.nuestrosparques.token.app.adapter.portalplus.mapper.PlanimetriaMapper
 import com.nuestrosparques.token.app.adapter.portalplus.service.PlanimetriaGisService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -56,8 +58,8 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
     }
 
     @Override
-    public List<BasePlaniDTO> findAllSectorByArea(String area) {
-        String apiUrl = portalPlusApiUrl + "/baseplani/area/" + area;
+    public List<BasePlaniDTO> findAllSectorByArea(String area, String codigoProducto) {
+        String apiUrl = portalPlusApiUrl + "/baseplani/area/" + area + "/producto/" + codigoProducto;
         ResponseEntity<List<BasePlaniDTO>> response =
                 restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<BasePlaniDTO> >(){});
@@ -102,6 +104,23 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
         ResponseEntity<List<GeolocationDTO>> response =
                 restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<GeolocationDTO> >(){});
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        }else {
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<String> getSepulturaContratosPorRut(Integer rut, String schema) {
+        String apiUrl = portalPlusApiUrl + "/contratos/sepultura"+
+                "?rut=" + rut;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-schema", schema);
+        HttpEntity<?> httpEntity  = new HttpEntity<>(headers);
+        ResponseEntity<List<String>> response =
+                restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity,
+                        new ParameterizedTypeReference<List<String> >(){});
         if (response.getStatusCode().is2xxSuccessful()) {
             return response.getBody();
         }else {
