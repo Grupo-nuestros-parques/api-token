@@ -9,9 +9,9 @@ public interface PlanimetriaGisService {
 
     List<GeolocationDTO> findGeolocationForSector(Integer codParque, String sector, Integer estado);
 
-    List<BasePlaniDTO> findAllByArea(Integer codParque);
+    List<BasePlaniDTO> findAllByArea(Integer codParque, String codigoProducto);
 
-    List<BasePlaniDTO> findAllSectorByArea(String area, String codigoProducto);
+    List<BasePlaniDTO> findAllSectorByArea(String area, String codigoProducto, Integer codigoParque);
 
     List<BasePlaniDTO> findAllByAreaAndSector(String area, String sector);
 

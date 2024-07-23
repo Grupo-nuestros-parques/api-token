@@ -45,8 +45,8 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
     }
 
     @Override
-    public List<BasePlaniDTO> findAllByArea(Integer codParque) {
-        String apiUrl = portalPlusApiUrl + "/baseplani/area/codParque/" + codParque;
+    public List<BasePlaniDTO> findAllByArea(Integer codParque, String codigoProducto) {
+        String apiUrl = portalPlusApiUrl + "/baseplani/area/codParque/" + codParque + "/producto/" + codigoProducto;
         ResponseEntity<List<BasePlaniDTO>> response =
                 restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<BasePlaniDTO> >(){});
@@ -58,8 +58,9 @@ public class PlanimetriaGisServiceImpl implements PlanimetriaGisService {
     }
 
     @Override
-    public List<BasePlaniDTO> findAllSectorByArea(String area, String codigoProducto) {
-        String apiUrl = portalPlusApiUrl + "/baseplani/area/" + area + "/producto/" + codigoProducto;
+    public List<BasePlaniDTO> findAllSectorByArea(String area, String codigoProducto, Integer codigoParque) {
+        String apiUrl = portalPlusApiUrl
+                + "/baseplani/area/" + area + "/parque/" + codigoParque + "/producto/" + codigoProducto;
         ResponseEntity<List<BasePlaniDTO>> response =
                 restTemplate.exchange(apiUrl, HttpMethod.GET, null,
                         new ParameterizedTypeReference<List<BasePlaniDTO> >(){});

@@ -33,14 +33,14 @@ public class PlanimetriaGisController {
         return planimetriaGisService.findGeolocationForSector(parque, sector, estado);
     }
 
-    @GetMapping("/baseplani/area/codParque/{codParque}")
-    List<BasePlaniDTO> findAllByArea(@PathVariable("codParque") Integer codParque){
-        return planimetriaGisService.findAllByArea(codParque);
+    @GetMapping("/baseplani/area/codParque/{codParque}/producto/{codigoProducto}")
+    List<BasePlaniDTO> findAllByArea(@PathVariable("codParque") Integer codParque, @PathVariable("codigoProducto") String codigoProducto){
+        return planimetriaGisService.findAllByArea(codParque, codigoProducto);
     }
 
-    @GetMapping("/baseplani/area/{area}/producto/{codigoProducto}")
-    List<BasePlaniDTO> findAllSectorByArea(@PathVariable("area") String area, @PathVariable("codigoProducto") String codigoProducto){
-        return planimetriaGisService.findAllSectorByArea(area, codigoProducto);
+    @GetMapping("/baseplani/area/{area}/parque/{codParque}/producto/{codigoProducto}")
+    List<BasePlaniDTO> findAllSectorByArea(@PathVariable("area") String area, @PathVariable("codParque") Integer codParque, @PathVariable("codigoProducto") String codigoProducto){
+        return planimetriaGisService.findAllSectorByArea(area, codigoProducto, codParque);
     }
 
     @GetMapping("/baseplani/area/{area}/sector/{sector}")
