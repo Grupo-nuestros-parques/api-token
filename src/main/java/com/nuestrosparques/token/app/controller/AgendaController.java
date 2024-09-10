@@ -1,45 +1,31 @@
 package com.nuestrosparques.token.app.controller;
 
-import com.nuestrosparques.token.app.adapter.obituario.dto.ObituarioCrematorioDTO;
-import com.nuestrosparques.token.app.adapter.obituario.dto.ObituarioDTO;
-import com.nuestrosparques.token.app.adapter.obituario.service.ObituarioService;
+import com.nuestrosparques.token.app.adapter.agenda.dto.OrigenDTO;
+import com.nuestrosparques.token.app.adapter.agenda.service.AgendaService;
 import com.nuestrosparques.token.app.adapter.tracking.service.TrackingService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/obituario")
+@RequestMapping("/agenda")
 public class AgendaController {
 
-    private final ObituarioService obituarioService;
+    private final AgendaService agendaService;
     private TrackingService trackingService;
 
     public AgendaController(
-            ObituarioService obituarioService,
+            AgendaService agendaService,
             TrackingService trackingService
     ) {
-        this.obituarioService = obituarioService;
+        this.agendaService = agendaService;
         this.trackingService = trackingService;
     }
 
-    @GetMapping
+    @GetMapping("/origen")
     @ResponseBody
-    List<ObituarioDTO> findAll(
-            @RequestParam("fechaInicio") String fechaInicio,
-            @RequestParam("fechaFin") String fechaFin,
-            @RequestParam("parque") Integer parque
-    ){
-        return obituarioService.obtenerTodosObituariosPorFechaYParque(fechaInicio, fechaFin, parque);
+    List<OrigenDTO> findAll(){
+        return agendaService.getOriginList();
     }
 
-    @GetMapping("/crematorio")
-    @ResponseBody
-    List<ObituarioCrematorioDTO> findAll(
-            @RequestParam("fechaInicio") String fechaInicio,
-            @RequestParam("fechaFin") String fechaFin
-
-    ){
-        return obituarioService.encontrarTodosObiturariosCinerario(fechaInicio, fechaFin);
-    }
 }
