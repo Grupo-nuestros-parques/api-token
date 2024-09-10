@@ -1,0 +1,3 @@
+Para ejecutar desde intelliJ el proyecto dependiendo de la configuracion, local, qa o prod debes condigurar lo siguiente:
+
+-Dspring.profiles.active=local
