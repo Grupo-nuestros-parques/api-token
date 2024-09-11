@@ -1,8 +1,13 @@
 package com.nuestrosparques.token.app.controller;
 
 import com.nuestrosparques.token.app.adapter.agenda.dto.OrigenDTO;
+import com.nuestrosparques.token.app.adapter.agenda.dto.TipoDTO;
+import com.nuestrosparques.token.app.adapter.agenda.dto.CiudadDTO;
+import com.nuestrosparques.token.app.adapter.agenda.dto.ComunaDTO;
 import com.nuestrosparques.token.app.adapter.agenda.service.AgendaService;
 import com.nuestrosparques.token.app.adapter.tracking.service.TrackingService;
+import com.nuestrosparques.token.app.request.RegistrarContactoRequest;
+import com.nuestrosparques.token.app.request.RegistrarIntentoRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +29,56 @@ public class AgendaController {
 
     @GetMapping("/origen")
     @ResponseBody
-    List<OrigenDTO> findAll(){
+    List<OrigenDTO> findAllOrigin(){
         return agendaService.getOriginList();
+    }
+
+    @GetMapping("/tipo")
+    @ResponseBody
+    List<TipoDTO> findAllTipos(
+            @RequestParam("idSub") String idSub
+    ){
+        return agendaService.getTipoList(idSub);
+    }
+
+    @GetMapping("/ciudades")
+    @ResponseBody
+    List<CiudadDTO> findAllCiudades(){
+        return agendaService.getCiudadesList();
+    }
+
+    @GetMapping("/comunas")
+    @ResponseBody
+    List<ComunaDTO> findAllComunas(
+            @RequestParam("idCiudad") String idCiudad
+    ){
+        return agendaService.getComunasList(idCiudad);
+    }
+
+    @PostMapping ("/registrarContacto")
+    public void registrarContacto(@RequestBody RegistrarContactoRequest request) {
+        agendaService.registrarContacto(
+                request.getCodigoAgente(),
+                request.getNombreContacto(),
+                request.getApellidoContacto(),
+                request.getRutContacto(),
+                request.getDireccionContacto(),
+                request.getTelefonoContacto(),
+                request.getEmailContacto()
+        );
+    }
+
+    @PostMapping ("/registrarIntento")
+    public void registrarIntento(@RequestBody RegistrarIntentoRequest request) {
+        agendaService.registrarIntento(
+                request.getCodigoAgente(),
+                request.getIdOrigin(),
+                request.getIdTypeGrupoPp(),
+                request.getIdTypeSubGrupoPp(),
+                request.getIdCity(),
+                request.getIdComuna(),
+                request.getExitoso()
+        );
     }
 
 }
