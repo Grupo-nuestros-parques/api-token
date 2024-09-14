@@ -3,8 +3,10 @@ package com.nuestrosparques.token.app.request;
 public class RegistrarContactoRequest {
     private String codigoAgente;
     private String nombreContacto;
-    private String apellidoContacto;
+    private String apellidoPaternoContacto;
+    private String apellidoMaternoContacto;
     private String rutContacto;
+    private String dvContacto;
     private String direccionContacto;
     private String telefonoContacto;
     private String emailContacto;
@@ -27,12 +29,20 @@ public class RegistrarContactoRequest {
         this.nombreContacto = nombreContacto;
     }
 
-    public String getApellidoContacto() {
-        return apellidoContacto;
+    public String getApellidoPaternoContacto() {
+        return apellidoPaternoContacto;
     }
 
-    public void setApellidoContacto(String apellidoContacto) {
-        this.apellidoContacto = apellidoContacto;
+    public void setApellidoPaternoContacto(String apellidoPaternoContacto) {
+        this.apellidoPaternoContacto = apellidoPaternoContacto;
+    }
+
+    public String getApellidoMaternoContacto() {
+        return apellidoMaternoContacto;
+    }
+
+    public void setApellidoMaternoContacto(String apellidoMaternoContacto) {
+        this.apellidoMaternoContacto = apellidoMaternoContacto;
     }
 
     public String getRutContacto() {
@@ -41,6 +51,14 @@ public class RegistrarContactoRequest {
 
     public void setRutContacto(String rutContacto) {
         this.rutContacto = rutContacto;
+    }
+
+    public String getDvContacto() {
+        return dvContacto;
+    }
+
+    public void setDvContacto(String dvContacto) {
+        this.dvContacto = dvContacto;
     }
 
     public String getDireccionContacto() {

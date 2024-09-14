@@ -12,11 +12,13 @@ public interface AgendaService {
     List<TipoDTO> getTipoList(String idSub);
     List<CiudadDTO> getCiudadesList();
     List<ComunaDTO> getComunasList(String idCiudad);
-    void registrarContacto(
+    Integer registrarContacto(
             String codigoAgente,
             String nombreContacto,
-            String apellidoContacto,
+            String apellidoPaternoContacto,
+            String apellidoMaternoContacto,
             String rutContacto,
+            String dvContacto,
             String direccionContacto,
             String telefonoContacto,
             String emailContacto

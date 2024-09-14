@@ -56,12 +56,14 @@ public class AgendaController {
     }
 
     @PostMapping ("/registrarContacto")
-    public void registrarContacto(@RequestBody RegistrarContactoRequest request) {
-        agendaService.registrarContacto(
+    public Integer registrarContacto(@RequestBody RegistrarContactoRequest request) {
+        return agendaService.registrarContacto(
                 request.getCodigoAgente(),
                 request.getNombreContacto(),
-                request.getApellidoContacto(),
+                request.getApellidoPaternoContacto(),
+                request.getApellidoMaternoContacto(),
                 request.getRutContacto(),
+                request.getDvContacto(),
                 request.getDireccionContacto(),
                 request.getTelefonoContacto(),
                 request.getEmailContacto()

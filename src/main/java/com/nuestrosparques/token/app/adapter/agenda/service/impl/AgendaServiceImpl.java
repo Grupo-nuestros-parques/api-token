@@ -126,11 +126,13 @@ public class AgendaServiceImpl implements AgendaService {
         return comunaDTOS;
     }
 
-    public void registrarContacto(
+    public Integer registrarContacto(
             String codigoAgente,
             String nombreContacto,
-            String apellidoContacto,
+            String apellidoPaternoContacto,
+            String apellidoMaternoContacto,
             String rutContacto,
+            String dvContacto,
             String direccionContacto,
             String telefonoContacto,
             String emailContacto
@@ -146,8 +148,10 @@ public class AgendaServiceImpl implements AgendaService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("codigoAgente", codigoAgente);
         body.add("nombreContacto", nombreContacto);
-        body.add("apellidoContacto", apellidoContacto);
+        body.add("apellidoPaternoContacto", apellidoPaternoContacto);
+        body.add("apellidoMaternoContacto", apellidoMaternoContacto);
         body.add("rutContacto", rutContacto);
+        body.add("dvContacto", dvContacto);
         body.add("direccionContacto", direccionContacto);
         body.add("telefonoContacto", telefonoContacto);
         body.add("emailContacto", emailContacto);
@@ -157,14 +161,18 @@ public class AgendaServiceImpl implements AgendaService {
 
         // Realizar la solicitud POST
         try {
-            ResponseEntity<Void> response = restTemplate.exchange(
+            ResponseEntity<Integer> response = restTemplate.exchange(
                     apiUrl,
                     HttpMethod.POST,
                     entity, // Enviar los parámetros de formulario como cuerpo de la solicitud
-                    Void.class // No se espera respuesta
+                    Integer.class // No se espera respuesta
             );
 
-            if (response.getStatusCode() != HttpStatus.OK) {
+            // Verificar si la respuesta es exitosa
+            if (response.getStatusCode() == HttpStatus.OK) {
+                // Retornar el valor del cuerpo de la respuesta (Integer)
+                return response.getBody();
+            } else {
                 throw new RuntimeException("Failed to register contact. Status code: " + response.getStatusCode());
             }
         } catch (Exception e) {
