@@ -1,13 +1,13 @@
 package com.nuestrosparques.token.app.controller;
 
-import com.nuestrosparques.token.app.adapter.agenda.dto.OrigenDTO;
-import com.nuestrosparques.token.app.adapter.agenda.dto.TipoDTO;
-import com.nuestrosparques.token.app.adapter.agenda.dto.CiudadDTO;
-import com.nuestrosparques.token.app.adapter.agenda.dto.ComunaDTO;
+import com.nuestrosparques.token.app.adapter.agenda.dto.*;
+import com.nuestrosparques.token.app.adapter.agenda.response.InformeAgenteResponse;
 import com.nuestrosparques.token.app.adapter.agenda.service.AgendaService;
+import com.nuestrosparques.token.app.adapter.tracking.response.TrackingResponse;
 import com.nuestrosparques.token.app.adapter.tracking.service.TrackingService;
 import com.nuestrosparques.token.app.request.RegistrarContactoRequest;
 import com.nuestrosparques.token.app.request.RegistrarIntentoRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,6 +80,43 @@ public class AgendaController {
                 request.getIdCity(),
                 request.getIdComuna(),
                 request.getExitoso()
+        );
+    }
+
+    @GetMapping("/obtener-lista-contactos")
+    @ResponseBody
+    public Page<InformeAgenteResponse> getInformes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) Long rut,
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String codigoAgente // Agregar el nuevo parámetro
+    ) {
+        return agendaService.getInformes(page, size, rut, nombre, codigoAgente); // Modificar el llamado al servicio
+    }
+
+    @GetMapping("/obtener-contacto")
+    @ResponseBody
+    public InformeAgenteResponse getContacto(
+            @RequestParam(required = false) String correlativo,
+            @RequestParam(required = false) String codigoAgente // Agregar el nuevo parámetro
+    ) {
+        return agendaService.getContacto(correlativo, codigoAgente); // Modificar el llamado al servicio
+    }
+
+    @PostMapping("/editar-contacto")
+    public Integer editarContacto(@RequestBody ContactoDTO contactoDTO) {
+        return agendaService.editarContacto(
+                contactoDTO.getCorrelativo(),
+                contactoDTO.getCodigoAgente(),
+                contactoDTO.getRutContacto(),
+                contactoDTO.getDvContacto(),
+                contactoDTO.getNombreContacto(),
+                contactoDTO.getApellidoPaternoContacto(),
+                contactoDTO.getApellidoMaternoContacto(),
+                contactoDTO.getDireccionContacto(),
+                contactoDTO.getTelefonoContacto(),
+                contactoDTO.getEmail()
         );
     }
 

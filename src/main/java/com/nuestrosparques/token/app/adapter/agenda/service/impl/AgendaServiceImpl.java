@@ -2,21 +2,19 @@ package com.nuestrosparques.token.app.adapter.agenda.service.impl;
 
 import com.nuestrosparques.token.app.adapter.agenda.dto.OrigenDTO;
 import com.nuestrosparques.token.app.adapter.agenda.mapper.OrigenMapper;
-import com.nuestrosparques.token.app.adapter.agenda.response.OrigenResponse;
+import com.nuestrosparques.token.app.adapter.agenda.response.*;
 import com.nuestrosparques.token.app.adapter.agenda.dto.TipoDTO;
 import com.nuestrosparques.token.app.adapter.agenda.mapper.TipoMapper;
-import com.nuestrosparques.token.app.adapter.agenda.response.TipoResponse;
 import com.nuestrosparques.token.app.adapter.agenda.dto.CiudadDTO;
 import com.nuestrosparques.token.app.adapter.agenda.mapper.CiudadMapper;
-import com.nuestrosparques.token.app.adapter.agenda.response.CiudadResponse;
 import com.nuestrosparques.token.app.adapter.agenda.dto.ComunaDTO;
 import com.nuestrosparques.token.app.adapter.agenda.mapper.ComunaMapper;
-import com.nuestrosparques.token.app.adapter.agenda.response.ComunaResponse;
 
 import com.nuestrosparques.token.app.adapter.agenda.service.AgendaService;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -221,6 +219,114 @@ public class AgendaServiceImpl implements AgendaService {
             );
 
             if (response.getStatusCode() != HttpStatus.OK) {
+                throw new RuntimeException("Failed to register contact. Status code: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            // Manejar excepciones
+            e.printStackTrace(); // O usar un framework de logging
+            throw new RuntimeException("Exception occurred while making POST request", e);
+        }
+    }
+
+    public Page<InformeAgenteResponse> getInformes(int page, int size, Long rut, String nombre, String codigoAgente) {
+        String apiUrl = agendaApiUrl + "/contactos/lista-contactos";
+
+        // Construir la URL con los parámetros de consulta
+        apiUrl += "?page=" + page + "&size=" + size;
+        if (rut != null) {
+            apiUrl += "&rut=" + rut;
+        }
+        if (nombre != null) {
+            apiUrl += "&nombre=" + nombre;
+        }
+        if (codigoAgente != null) { // Agregar el nuevo parámetro
+            apiUrl += "&codigoAgente=" + codigoAgente;
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        ResponseEntity<PaginatedResponse<InformeAgenteResponse>> response = restTemplate.exchange(
+                apiUrl,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<PaginatedResponse<InformeAgenteResponse>>() {}
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            PaginatedResponse<InformeAgenteResponse> paginatedResponse = response.getBody();
+            return paginatedResponse.toPage();
+        } else {
+            throw new RuntimeException("La llamada al servicio web (Agenda) falló con el código de estado: " + response.getStatusCodeValue());
+        }
+    }
+
+    @Override
+    public InformeAgenteResponse getContacto(String correlativo, String codigoAgente) {
+        String apiUrl = agendaApiUrl + "/contactos/obtener-contacto?correlativo=" + correlativo + "&codigoAgente=" + codigoAgente;
+
+        ResponseEntity<InformeAgenteResponse> response = restTemplate.exchange(
+                apiUrl, HttpMethod.GET, null, new ParameterizedTypeReference<InformeAgenteResponse>() {}
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            // Retorna el cuerpo de la respuesta directamente
+            return response.getBody();
+        } else {
+            // Maneja el fallo aquí
+            return null; // O lanza una excepción según sea necesario
+        }
+    }
+
+    public Integer editarContacto(
+            String correlativo,
+            String codigoAgente,
+            String rutContacto,
+            String dvContacto,
+            String nombreContacto,
+            String apellidoPaternoContacto,
+            String apellidoMaternoContacto,
+            String direccionContacto,
+            String telefonoContacto,
+            String emailContacto
+    ) {
+        // URL de la API
+        String apiUrl = agendaApiUrl + "/contactos/editar-contacto";
+
+        // Configurar encabezados
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        // Crear el cuerpo de la solicitud con parámetros de formulario
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("correlativo", correlativo);
+        body.add("codigoAgente", codigoAgente);
+        body.add("rutContacto", rutContacto);
+        body.add("dvContacto", dvContacto);
+        body.add("nombreContacto", nombreContacto);
+        body.add("apellidoPaternoContacto", apellidoPaternoContacto);
+        body.add("apellidoMaternoContacto", apellidoMaternoContacto);
+        body.add("direccionContacto", direccionContacto);
+        body.add("telefonoContacto", telefonoContacto);
+        body.add("emailContacto", emailContacto);
+
+        // Crear la entidad HTTP con cuerpo y encabezados
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+
+        // Realizar la solicitud POST
+        try {
+            ResponseEntity<Integer> response = restTemplate.exchange(
+                    apiUrl,
+                    HttpMethod.POST,
+                    entity, // Enviar los parámetros de formulario como cuerpo de la solicitud
+                    Integer.class // No se espera respuesta
+            );
+
+            // Verificar si la respuesta es exitosa
+            if (response.getStatusCode() == HttpStatus.OK) {
+                // Retornar el valor del cuerpo de la respuesta (Integer)
+                return response.getBody();
+            } else {
                 throw new RuntimeException("Failed to register contact. Status code: " + response.getStatusCode());
             }
         } catch (Exception e) {
