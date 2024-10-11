@@ -4,9 +4,11 @@ import com.nuestrosparques.token.app.adapter.agenda.dto.CiudadDTO;
 import com.nuestrosparques.token.app.adapter.agenda.dto.OrigenDTO;
 import com.nuestrosparques.token.app.adapter.agenda.dto.TipoDTO;
 import com.nuestrosparques.token.app.adapter.agenda.dto.ComunaDTO;
+import com.nuestrosparques.token.app.adapter.agenda.response.EntrevistasAgendadasResponse;
 import com.nuestrosparques.token.app.adapter.agenda.response.InformeAgenteResponse;
 import org.springframework.data.domain.Page;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface AgendaService {
@@ -52,4 +54,12 @@ public interface AgendaService {
             String telefonoContacto,
             String emailContacto
     );
+
+    Integer agendarEntrevista(
+            String informeAgenteId,
+            String fechaEntrevista
+    );
+
+    Page<EntrevistasAgendadasResponse>  getEntrevistasAgendadasPageable(int page, int size, Long rut, String nombre, String codigoAgente, Timestamp fechaDesde, Timestamp fechaHasta);
+
 }

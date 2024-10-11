@@ -21,6 +21,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -333,6 +335,89 @@ public class AgendaServiceImpl implements AgendaService {
             // Manejar excepciones
             e.printStackTrace(); // O usar un framework de logging
             throw new RuntimeException("Exception occurred while making POST request", e);
+        }
+    }
+
+    public Integer agendarEntrevista(
+            String informeAgenteId,
+            String fechaEntrevista
+
+    ) {
+        // URL de la API
+        String apiUrl = agendaApiUrl + "/entrevistas/agendarEntrevista";
+
+        // Configurar encabezados
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        // Crear el cuerpo de la solicitud con parámetros de formulario
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("informeAgenteId", informeAgenteId);
+        body.add("fechaEntrevista", fechaEntrevista);
+
+        // Crear la entidad HTTP con cuerpo y encabezados
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
+
+        // Realizar la solicitud POST
+        try {
+            ResponseEntity<Integer> response = restTemplate.exchange(
+                    apiUrl,
+                    HttpMethod.POST,
+                    entity, // Enviar los parámetros de formulario como cuerpo de la solicitud
+                    Integer.class // No se espera respuesta
+            );
+
+            // Verificar si la respuesta es exitosa
+            if (response.getStatusCode() == HttpStatus.OK) {
+                // Retornar el valor del cuerpo de la respuesta (Integer)
+                return response.getBody();
+            } else {
+                throw new RuntimeException("Failed to register contact. Status code: " + response.getStatusCode());
+            }
+        } catch (Exception e) {
+            // Manejar excepciones
+            e.printStackTrace(); // O usar un framework de logging
+            throw new RuntimeException("Exception occurred while making POST request", e);
+        }
+    }
+
+    public Page<EntrevistasAgendadasResponse> getEntrevistasAgendadasPageable(int page, int size, Long rut, String nombre, String codigoAgente, Timestamp fechaDesde, Timestamp fechaHasta) {
+        String apiUrl = agendaApiUrl + "/entrevistas/listar-entrevistas";
+
+        // Construir la URL con los parámetros de consulta
+        apiUrl += "?page=" + page + "&size=" + size;
+        if (rut != null) {
+            apiUrl += "&rut=" + rut;
+        }
+        if (nombre != null) {
+            apiUrl += "&nombre=" + nombre;
+        }
+        if (codigoAgente != null) {
+            apiUrl += "&codigoAgente=" + codigoAgente;
+        }
+        // Agregar fechas a la URL
+        if (fechaDesde != null) {
+            apiUrl += "&fechaDesde=" + fechaDesde.toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME);
+        }
+        if (fechaHasta != null) {
+            apiUrl += "&fechaHasta=" + fechaHasta.toLocalDateTime().format(DateTimeFormatter.ISO_DATE_TIME);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        ResponseEntity<PaginatedResponse<EntrevistasAgendadasResponse>> response = restTemplate.exchange(
+                apiUrl,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                new ParameterizedTypeReference<PaginatedResponse<EntrevistasAgendadasResponse>>() {}
+        );
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            PaginatedResponse<EntrevistasAgendadasResponse> paginatedResponse = response.getBody();
+            return paginatedResponse.toPage();
+        } else {
+            throw new RuntimeException("La llamada al servicio web (Datasource) falló con el código de estado: " + response.getStatusCodeValue());
         }
     }
 

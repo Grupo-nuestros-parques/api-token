@@ -1,4 +1,4 @@
-package com.nuestrosparques.token.app.request;
+package com.nuestrosparques.token.app.adapter.agenda.request;
 
 public class RegistrarIntentoRequest {
     private String codigoAgente;
